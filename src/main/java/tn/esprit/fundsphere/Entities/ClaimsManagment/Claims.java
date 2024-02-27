@@ -3,6 +3,7 @@ package tn.esprit.fundsphere.Entities.ClaimsManagment;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import tn.esprit.fundsphere.Entities.UserManagment.User;
 
 import java.util.Date;
 
@@ -21,4 +22,7 @@ public class Claims {
     String Content ;
     String answer ;
     Date dateAnswer ;
+
+    @ManyToOne
+    User user;
 }

@@ -3,8 +3,11 @@ package tn.esprit.fundsphere.Entities.TrainigManagment;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import tn.esprit.fundsphere.Entities.AccountManagment.Account;
+import tn.esprit.fundsphere.Entities.UserManagment.User;
 
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,4 +22,7 @@ public class TrainigInscription {
     int idTi ;
     Date DateInscription ;
     String feedback ;
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "trainiginscription")
+    private Set<User> users;
 }

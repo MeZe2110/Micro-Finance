@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import tn.esprit.fundsphere.Entities.TransactionManagment.Transaction;
 import tn.esprit.fundsphere.Entities.UserManagment.TypeUser;
+import tn.esprit.fundsphere.Entities.UserManagment.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,5 +30,8 @@ public class Investment {
 
     @OneToMany(mappedBy = "investment")
     private List<Transaction> transactions;
+
+    @ManyToOne
+    User user;
 
 }
