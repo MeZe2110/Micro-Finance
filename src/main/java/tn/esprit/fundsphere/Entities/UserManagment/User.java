@@ -3,9 +3,11 @@ package tn.esprit.fundsphere.Entities.UserManagment;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import tn.esprit.fundsphere.Entities.ClaimsManagment.Claims;
 import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,7 +33,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     TypeUser role;
 
-    /*@ManyToOne
-    Credit credit ;*/
+    @OneToMany(mappedBy = "user")
+    private List<Claims>claims;
 
 }

@@ -1,6 +1,7 @@
 package tn.esprit.fundsphere.Entities.CrediMangment;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -23,6 +24,7 @@ public class Tranche {
     float amount ;
     float rateRecovery ;
 
-    /*@ManyToOne
-    Credit credit ;*/
+    @ManyToOne
+    @JsonIgnore
+    private Credit credit ;
 }
