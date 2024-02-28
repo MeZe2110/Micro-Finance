@@ -64,5 +64,7 @@ public class User {
     @ManyToOne
     TrainigInscription trainiginscription;
 
+    /*changement*/
+
 
 }
