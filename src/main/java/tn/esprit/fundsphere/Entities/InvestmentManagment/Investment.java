@@ -27,7 +27,7 @@ public class Investment {
     @Enumerated(EnumType.STRING)
     TypeInvest typeI;
 
-    @OneToMany(mappedBy = "investment")
-    private List<Transaction> transactions;
+   /* @OneToMany(mappedBy = "investment")
+    private List<Transaction> transactions;*/
 
 }

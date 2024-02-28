@@ -4,6 +4,7 @@ package tn.esprit.fundsphere.Entities.TransactionManagment;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import tn.esprit.fundsphere.Entities.AccountManagment.Account;
 import tn.esprit.fundsphere.Entities.UserManagment.TypeUser;
 
 import java.time.LocalDate;
@@ -24,6 +25,8 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     TypeTransaction typeT;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Account account;
 
 }
 
