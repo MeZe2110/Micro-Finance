@@ -1,10 +1,14 @@
 package tn.esprit.fundsphere.Entities.CrediMangment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import tn.esprit.fundsphere.Entities.AccountManagment.Account;
 import tn.esprit.fundsphere.Entities.UserManagment.User;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -27,9 +31,10 @@ public class Credit {
     String decision ;
     float amountRecoveryMonth ;
 
-    @OneToMany (mappedBy = "credit")
-    Set<Tranche> tranches ;
+  @ManyToOne
+  @JsonIgnore
+    private Account account;
 
-    @OneToMany (mappedBy = "credit")
-    Set<User> users ;
+  @OneToMany(mappedBy = "credit")
+    private List<Tranche> tranches;
 }

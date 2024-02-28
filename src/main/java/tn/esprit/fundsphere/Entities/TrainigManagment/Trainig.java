@@ -3,6 +3,7 @@ package tn.esprit.fundsphere.Entities.TrainigManagment;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import tn.esprit.fundsphere.Entities.UserManagment.User;
 
 import java.util.Date;
 
@@ -22,4 +23,7 @@ public class Trainig {
     Date startDate;
     Date finishDate;
     int maxCapacity;
+
+    @ManyToOne
+    User user;
 }

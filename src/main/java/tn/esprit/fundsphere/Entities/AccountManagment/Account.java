@@ -3,10 +3,13 @@ package tn.esprit.fundsphere.Entities.AccountManagment;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
 import tn.esprit.fundsphere.Entities.UserManagment.TypeUser;
+import tn.esprit.fundsphere.Entities.UserManagment.User;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,6 +30,10 @@ public class Account {
     @Enumerated(EnumType.STRING)
     TypeAccount typeA;
 
+    @OneToMany(mappedBy = "account")
+    private List<Credit>credits;
 
+    @ManyToOne
+    User user;
 
 }
