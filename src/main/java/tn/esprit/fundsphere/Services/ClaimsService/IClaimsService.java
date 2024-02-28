@@ -1,7 +1,6 @@
 package tn.esprit.fundsphere.Services.ClaimsService;
 
-import tn.esprit.fundsphere.Entities.ClaimsManagment.Claims;
-import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
+import tn.esprit.fundsphere.Entites.ClaimsManagment.Claims;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package tn.esprit.fundsphere.Services.ClaimsService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import tn.esprit.fundsphere.Entities.ClaimsManagment.Claims;
+import tn.esprit.fundsphere.Entites.ClaimsManagment.Claims;
 import tn.esprit.fundsphere.Repositories.ClaimsRepository.ClaimsRepository;
 
 import java.util.List;
