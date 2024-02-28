@@ -1,6 +1,6 @@
 package tn.esprit.fundsphere.Services.CreditService;
 
-import tn.esprit.fundsphere.Entites.CrediMangment.Credit;
+import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package tn.esprit.fundsphere.Services.CreditService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import tn.esprit.fundsphere.Entites.CrediMangment.Credit;
+import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
 import tn.esprit.fundsphere.Repositories.CreditRepository.CreditRepository;
 
 import java.util.List;

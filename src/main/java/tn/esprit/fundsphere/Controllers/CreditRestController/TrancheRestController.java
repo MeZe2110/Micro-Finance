@@ -3,7 +3,8 @@ package tn.esprit.fundsphere.Controllers.CreditRestController;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.fundsphere.Entites.CrediMangment.Tranche;
+import tn.esprit.fundsphere.Entities.ClaimsManagment.Claims;
+import tn.esprit.fundsphere.Entities.CrediMangment.Tranche;
 import tn.esprit.fundsphere.Services.CreditService.TrancheServiceImpl;
 
 import java.util.List;

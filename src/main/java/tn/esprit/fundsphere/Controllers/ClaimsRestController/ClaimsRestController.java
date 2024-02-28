@@ -1,8 +1,9 @@
 package tn.esprit.fundsphere.Controllers.ClaimsRestController;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.fundsphere.Entites.ClaimsManagment.Claims;
+import tn.esprit.fundsphere.Entities.ClaimsManagment.Claims;
 import tn.esprit.fundsphere.Services.ClaimsService.ClaimsServiceImlp;
 
 import java.util.List;
