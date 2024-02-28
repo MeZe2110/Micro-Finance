@@ -26,7 +26,7 @@ public class Loan {
      Date dateFin;
      Float Interest;
 
-    @OneToMany(mappedBy = "loan")
-    List<Transaction> transactions;
+    /*@OneToMany(mappedBy = "loan")
+    List<Transaction> transactions;*/
 
 }

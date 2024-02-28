@@ -1,5 +1,6 @@
 package tn.esprit.fundsphere.Entities.ClaimsManagment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -24,5 +25,6 @@ public class Claims {
     Date dateAnswer ;
 
     @ManyToOne
-    User user;
+    @JsonIgnore
+    private User user ;
 }

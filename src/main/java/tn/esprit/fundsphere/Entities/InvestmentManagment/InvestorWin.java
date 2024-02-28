@@ -23,7 +23,6 @@ public class InvestorWin {
     Date dateInvW ;
     Float ROI;
 
-
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "investorwin")
+    @OneToMany(mappedBy = "investorWin")
     private Set<User> users;
 }

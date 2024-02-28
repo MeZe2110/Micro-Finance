@@ -21,6 +21,7 @@ public class UserRestController {
         {
             return usersService.addUsers(users);
         }
+
         @GetMapping("/show-users")
         public List<User> getAllUsers() {
             List<User> listUsers = usersService.getAllUsers();

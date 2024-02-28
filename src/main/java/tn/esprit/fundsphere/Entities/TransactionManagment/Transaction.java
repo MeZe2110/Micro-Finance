@@ -4,6 +4,7 @@ package tn.esprit.fundsphere.Entities.TransactionManagment;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import tn.esprit.fundsphere.Entities.UserManagment.TypeUser;
 
 import java.time.LocalDate;
 
