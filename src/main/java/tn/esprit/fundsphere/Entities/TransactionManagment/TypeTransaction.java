@@ -1,4 +1,4 @@
-package tn.esprit.fundsphere.Entites.TransactionManagment;
+package tn.esprit.fundsphere.Entities.TransactionManagment;
 
 public enum TypeTransaction {
 

@@ -1,9 +1,9 @@
-package tn.esprit.fundsphere.Entites.TrainigManagment;
+package tn.esprit.fundsphere.Entities.TrainigManagment;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import tn.esprit.fundsphere.Entites.UserManagment.User;
+import tn.esprit.fundsphere.Entities.UserManagment.User;
 
 import java.util.Date;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package tn.esprit.fundsphere.Entites.CrediMangment;
+package tn.esprit.fundsphere.Entities.CrediMangment;
 
 
 import jakarta.persistence.*;

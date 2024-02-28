@@ -1,15 +1,15 @@
-package tn.esprit.fundsphere.Entites.UserManagment;
+package tn.esprit.fundsphere.Entities.UserManagment;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import tn.esprit.fundsphere.Entites.AccountManagment.Account;
-import tn.esprit.fundsphere.Entites.ClaimsManagment.Claims;
-import tn.esprit.fundsphere.Entites.InvestmentManagment.Investment;
-import tn.esprit.fundsphere.Entites.InvestmentManagment.InvestorWin;
-import tn.esprit.fundsphere.Entites.TrainigManagment.Trainig;
-import tn.esprit.fundsphere.Entites.TrainigManagment.TrainigInscription;
-import tn.esprit.fundsphere.Entites.CrediMangment.Credit;
+import tn.esprit.fundsphere.Entities.AccountManagment.Account;
+import tn.esprit.fundsphere.Entities.ClaimsManagment.Claims;
+import tn.esprit.fundsphere.Entities.InvestmentManagment.Investment;
+import tn.esprit.fundsphere.Entities.InvestmentManagment.InvestorWin;
+import tn.esprit.fundsphere.Entities.TrainigManagment.Trainig;
+import tn.esprit.fundsphere.Entities.TrainigManagment.TrainigInscription;
+import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
 
 import java.util.Date;
 import java.util.Set;

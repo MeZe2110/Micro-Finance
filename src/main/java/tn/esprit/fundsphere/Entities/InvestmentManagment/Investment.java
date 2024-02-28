@@ -1,10 +1,10 @@
-package tn.esprit.fundsphere.Entites.InvestmentManagment;
+package tn.esprit.fundsphere.Entities.InvestmentManagment;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import tn.esprit.fundsphere.Entites.TransactionManagment.Transaction;
-import tn.esprit.fundsphere.Entites.UserManagment.User;
+import tn.esprit.fundsphere.Entities.TransactionManagment.Transaction;
+import tn.esprit.fundsphere.Entities.UserManagment.User;
 
 import java.util.List;
 
