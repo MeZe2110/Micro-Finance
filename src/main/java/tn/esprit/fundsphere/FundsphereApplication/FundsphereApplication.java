@@ -1,4 +1,4 @@
-package tn.esprit.fundsphere;
+package tn.esprit.fundsphere.FundsphereApplication;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
