@@ -1,4 +1,4 @@
-package tn.esprit.fundsphere.Entities.UserManagment;
+package tn.esprit.fundsphere.Entites.UserManagment;
 
 public enum TypeUser {
     ADMIN , CLIENT , INVESTOR , TRAINER ;

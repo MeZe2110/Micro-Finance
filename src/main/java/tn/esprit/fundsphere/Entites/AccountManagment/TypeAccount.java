@@ -1,4 +1,4 @@
-package tn.esprit.fundsphere.Entities.AccountManagment;
+package tn.esprit.fundsphere.Entites.AccountManagment;
 
 public enum TypeAccount {
 

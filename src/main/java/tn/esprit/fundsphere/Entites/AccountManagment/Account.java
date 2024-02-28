@@ -1,13 +1,11 @@
-package tn.esprit.fundsphere.Entities.AccountManagment;
+package tn.esprit.fundsphere.Entites.AccountManagment;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import tn.esprit.fundsphere.Entities.UserManagment.TypeUser;
-import tn.esprit.fundsphere.Entities.UserManagment.User;
+import tn.esprit.fundsphere.Entites.UserManagment.User;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter

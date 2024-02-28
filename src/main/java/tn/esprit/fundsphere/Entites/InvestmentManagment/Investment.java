@@ -1,13 +1,11 @@
-package tn.esprit.fundsphere.Entities.InvestmentManagment;
+package tn.esprit.fundsphere.Entites.InvestmentManagment;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import tn.esprit.fundsphere.Entities.TransactionManagment.Transaction;
-import tn.esprit.fundsphere.Entities.UserManagment.TypeUser;
-import tn.esprit.fundsphere.Entities.UserManagment.User;
+import tn.esprit.fundsphere.Entites.TransactionManagment.Transaction;
+import tn.esprit.fundsphere.Entites.UserManagment.User;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter

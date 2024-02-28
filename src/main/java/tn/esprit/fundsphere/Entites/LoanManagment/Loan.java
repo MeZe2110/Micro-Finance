@@ -1,9 +1,9 @@
-package tn.esprit.fundsphere.Entities.LoanManagment;
+package tn.esprit.fundsphere.Entites.LoanManagment;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import tn.esprit.fundsphere.Entities.TransactionManagment.Transaction;
+import tn.esprit.fundsphere.Entites.TransactionManagment.Transaction;
 
 import java.util.Date;
 import java.util.List;

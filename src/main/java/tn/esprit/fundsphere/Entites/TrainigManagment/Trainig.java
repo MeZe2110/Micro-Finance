@@ -1,9 +1,9 @@
-package tn.esprit.fundsphere.Entities.ClaimsManagment;
+package tn.esprit.fundsphere.Entites.TrainigManagment;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import tn.esprit.fundsphere.Entities.UserManagment.User;
+import tn.esprit.fundsphere.Entites.UserManagment.User;
 
 import java.util.Date;
 
@@ -13,15 +13,16 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "claims")
-public class Claims {
+@Table(name = "trainig")
+public class Trainig {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    int idClaim ;
-    Date dateCreationClaim ;
-    String Content ;
-    String answer ;
-    Date dateAnswer ;
+    int idTrain;
+    String title;
+    String description;
+    Date startDate;
+    Date finishDate;
+    int maxCapacity;
 
     @ManyToOne
     User user;
