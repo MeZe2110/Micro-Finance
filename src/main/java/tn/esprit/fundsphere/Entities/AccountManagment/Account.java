@@ -33,5 +33,6 @@ public class Account {
     private List<Credit>credits;
 
 
-
+    public void setCredit(Credit credit) {
+    }
 }

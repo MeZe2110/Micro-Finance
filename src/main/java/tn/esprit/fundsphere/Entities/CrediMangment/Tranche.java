@@ -3,6 +3,8 @@ package tn.esprit.fundsphere.Entities.CrediMangment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -18,10 +20,16 @@ import java.util.Date;
 public class Tranche {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    int idTranche;
+    Long idTranche;
     boolean status ;
+
+    //@NotNull(message = "The Limit date cannot be null.")
     Date dateLimit ;
+
+    //@Positive(message = "the amount must be positif")
     float amount ;
+
+   // @Positive(message = "the rateRecovery must be positif")
     float rateRecovery ;
 
     @ManyToOne
