@@ -3,6 +3,7 @@ package tn.esprit.fundsphere.Entities.UserManagment;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import tn.esprit.fundsphere.Entities.AccountManagment.Account;
 import tn.esprit.fundsphere.Entities.ClaimsManagment.Claims;
 import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
 
@@ -35,5 +36,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Claims>claims;
+
+
+   /* @ManyToOne(cascade = CascadeType.ALL)
+    private Account account;*/
 
 }

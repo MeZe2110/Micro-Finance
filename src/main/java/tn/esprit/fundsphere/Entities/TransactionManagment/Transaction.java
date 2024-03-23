@@ -16,17 +16,26 @@ import java.time.LocalDate;
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "transaction")
+@ToString
 public class Transaction {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    int idTransaction;
+    long idTransaction;
+
     float amount;
+
     LocalDate date;
+
     @Enumerated(EnumType.STRING)
     TypeTransaction typeT;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Account account;
+    @ManyToOne
+    @JoinColumn(name = "sender_id", nullable = false)
+    private Account sender;
 
+    @ManyToOne
+    @JoinColumn(name = "receiver_id", nullable = false)
+    private Account receiver;
 }
 
