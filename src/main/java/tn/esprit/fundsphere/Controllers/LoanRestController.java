@@ -39,5 +39,18 @@ public class LoanRestController {
     Loan AddLoan(@RequestBody Loan loan){
         return loanService.AddLoan(loan);
     }
+    @PostMapping("/Shows")
+    public void ShowAll() {
+         loanService.checkloan();
+    }
+
+
+    @PostMapping("/loan/{amount}/{id}/{periode}")
+    public Loan loan(@PathVariable("id") Integer id,@PathVariable("amount") Float amount,@PathVariable("periode") Integer periode){
+        return loanService.loan(id, amount, periode);
+    }
+
+
+
 
 }

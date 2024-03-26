@@ -17,4 +17,12 @@ public interface InvestmentService {
     Investment ShowInvestment(Integer id);
 
     List<Investment> ShowAllInvestment();
+
+    Investment CreateInvestment(Integer owner_id, Investment investment);
+
+    Investment AcceptInvestment(Integer invest_id);
+
+    Investment RefuseInvestment(Integer invest_id);
+
+    void DisplayInvestment();
 }

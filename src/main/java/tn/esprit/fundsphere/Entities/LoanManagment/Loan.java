@@ -19,12 +19,16 @@ public class Loan {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-     Integer idPret;
+     Integer idLoan;
      Float amount;
      int investmentPeriodInMonths;
      Date dateInv;
      Date dateFin;
-     Float Interest;
+     Float interest;
+     Float score;
+     boolean status;
+     Integer id_user;
+
 
     @OneToMany(mappedBy = "loan")
     List<Transaction> transactions;

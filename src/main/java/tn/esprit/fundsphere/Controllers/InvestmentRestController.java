@@ -37,6 +37,10 @@ public class InvestmentRestController {
         return investmentService.UpdateAmount(id,amount);
 
     }
+    @PutMapping("/display")
+    void Displayinvest(){
+         investmentService.DisplayInvestment();
+    }
 
 
 }
