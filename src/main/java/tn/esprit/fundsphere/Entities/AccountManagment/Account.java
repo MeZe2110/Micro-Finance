@@ -45,6 +45,7 @@ public class Account {
     private List<Transaction> transactions;*/
     @ManyToOne(cascade = CascadeType.ALL )
     private User user;
+    //hii
 
 
 
