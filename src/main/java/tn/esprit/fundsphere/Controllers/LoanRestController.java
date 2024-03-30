@@ -2,9 +2,14 @@ package tn.esprit.fundsphere.Controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.fundsphere.Entities.AccountManagment.Account;
 import tn.esprit.fundsphere.Entities.InvestmentManagment.Investment;
 import tn.esprit.fundsphere.Entities.LoanManagment.Loan;
+import tn.esprit.fundsphere.Entities.TransactionManagment.Transaction;
+import tn.esprit.fundsphere.Entities.TransactionManagment.TypeTransaction;
+import tn.esprit.fundsphere.Services.AccountService.IAccountService;
 import tn.esprit.fundsphere.Services.Loan.LoanService;
+import tn.esprit.fundsphere.Services.TransactionService.ITransactionService;
 
 import java.util.List;
 
@@ -13,6 +18,8 @@ import java.util.List;
 @RequestMapping("/Loan")
 public class LoanRestController {
     public LoanService loanService;
+    public ITransactionService iTransactionService;
+    public IAccountService iAccountService;
 
     @GetMapping("/Show")
     public List<Loan> ShowAllLoans() {
@@ -46,8 +53,20 @@ public class LoanRestController {
 
 
     @PostMapping("/loan/{amount}/{id}/{periode}")
-    public Loan loan(@PathVariable("id") Integer id,@PathVariable("amount") Float amount,@PathVariable("periode") Integer periode){
+    public Loan loan(@PathVariable("id") Long id,@PathVariable("amount") Float amount,@PathVariable("periode") Integer periode){
+      /*  Account account=iAccountService.getAccountById(id);
+        Transaction transaction=new Transaction();
+        transaction.setSender(account);
+        transaction.setReceiver(iAccountService.getAccountById(1L));
+        transaction.setAmount(amount);
+        transaction.setTypeT(TypeTransaction.LOAN);
+
+        transaction= iTransactionService.addTransaction(transaction); */
         return loanService.loan(id, amount, periode);
+    }
+    @PutMapping("/check")
+    public void CheckLoan(){
+        loanService.checkloan();
     }
 
 

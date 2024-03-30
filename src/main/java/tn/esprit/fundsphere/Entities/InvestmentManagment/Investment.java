@@ -1,5 +1,6 @@
 package tn.esprit.fundsphere.Entities.InvestmentManagment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +22,7 @@ public class Investment {
 
     Integer idInvest;
    String project_name;
-    Integer ownerId;
+    Long ownerId;
     Float amountInv;
     Float maxamount;
     @Enumerated(EnumType.STRING)
@@ -32,6 +33,8 @@ public class Investment {
     @Enumerated(EnumType.STRING)
     InvestStatus status;
 
+
+    @JsonIgnore
     @OneToMany(mappedBy = "investment")
     private List<Transaction> transactions;
 

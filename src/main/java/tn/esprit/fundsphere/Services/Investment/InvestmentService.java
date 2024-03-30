@@ -18,11 +18,13 @@ public interface InvestmentService {
 
     List<Investment> ShowAllInvestment();
 
-    Investment CreateInvestment(Integer owner_id, Investment investment);
+    Investment CreateInvestment(Long owner_id, Investment investment);
 
     Investment AcceptInvestment(Integer invest_id);
 
     Investment RefuseInvestment(Integer invest_id);
 
     void DisplayInvestment();
+
+    Investment Invest(Long account_id, Float amount_invested, Integer investment_id);
 }

@@ -17,9 +17,9 @@ public interface LoanService {
 
     void DeleteLoan(Integer id);
 
-    Loan loan(Integer idUser, Float amount, Integer investmentPeriodInMonths);
+    Loan loan(Long idUser, Float amount, Integer investmentPeriodInMonths);
 
-    List<Loan> bystatus();
+
 
     void checkloan();
 }

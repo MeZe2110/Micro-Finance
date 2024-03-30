@@ -42,5 +42,19 @@ public class InvestmentRestController {
          investmentService.DisplayInvestment();
     }
 
+@PutMapping("/invest/{id_user}/{amount}/{id_invest}")
+    Investment invest(@PathVariable("id_user") Long account_id,@PathVariable("amount")Float amount,@PathVariable("id_invest")Integer id_invest){
+        return investmentService.Invest(account_id,amount,id_invest);
+}
+
+@PutMapping("/accept/{id}")
+    Investment AcceptInvestment(@PathVariable("id") Integer id){
+        return investmentService.AcceptInvestment(id);
+}
+    @PutMapping("/refuse/{id}")
+    Investment RefuseInvestment(@PathVariable("id") Integer id){
+        return investmentService.RefuseInvestment(id);
+    }
+
 
 }
