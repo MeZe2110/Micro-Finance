@@ -23,6 +23,5 @@ public class InvestorWin {
     Date dateInvW ;
     Float ROI;
 
-    @OneToMany(mappedBy = "investorWin")
-    private Set<User> users;
+
 }

@@ -3,12 +3,7 @@ package tn.esprit.fundsphere.Entities.InvestmentManagment;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import tn.esprit.fundsphere.Entities.TransactionManagment.Transaction;
-import tn.esprit.fundsphere.Entities.UserManagment.TypeUser;
 import tn.esprit.fundsphere.Entities.UserManagment.User;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter

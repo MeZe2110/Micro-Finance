@@ -4,11 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
-import tn.esprit.fundsphere.Entities.UserManagment.TypeUser;
 import tn.esprit.fundsphere.Entities.UserManagment.User;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Getter

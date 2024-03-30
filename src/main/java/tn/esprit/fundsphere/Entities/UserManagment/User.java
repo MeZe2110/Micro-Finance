@@ -2,59 +2,86 @@ package tn.esprit.fundsphere.Entities.UserManagment;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import tn.esprit.fundsphere.Entities.AccountManagment.Account;
 import tn.esprit.fundsphere.Entities.ClaimsManagment.Claims;
-import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
 import tn.esprit.fundsphere.Entities.InvestmentManagment.Investment;
-import tn.esprit.fundsphere.Entities.InvestmentManagment.InvestorWin;
 import tn.esprit.fundsphere.Entities.TrainigManagment.Trainig;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "user")
-public class User {
+public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Long idUser ;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idUser;
 
-    String name ;
-    String surname ;
-    String userName ;
-    String password ;
-    String Email ;
-    String address ;
-
-    Integer cin ;
-    Integer phone ;
-
-    Date birthdate ;
-    Date creationDate ;
+    private String firstname;
+    private String lastname;
+    private String username;
+    private String password;
 
     @Enumerated(EnumType.STRING)
-    TypeUser role;
+    Role role;
 
-        @OneToMany(mappedBy = "user")
-        private List<Claims>claims;
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
-        @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
-        private Set<Account> accounts;
 
-        @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
-        private Set<Trainig> trainigs;
+    @OneToMany(mappedBy = "user")
+    private List<Claims> claims;
 
-        @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
-        private Set<Investment> investments;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<Account> accounts;
 
-        @ManyToOne
-        InvestorWin investorWin;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<Trainig> trainigs;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<Investment> investments;
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername(){
+        return username;
+    }
+
+    @Override
+    public String getPassword(){
+        return password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
+
+
+
