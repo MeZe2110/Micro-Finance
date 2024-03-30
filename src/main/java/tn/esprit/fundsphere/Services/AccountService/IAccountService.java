@@ -15,5 +15,6 @@ public interface IAccountService {
     public Account updateAccount(Account account);
     public List<Account> getAllaccount();
     public Account getaccount(Long idAccount);
+    //
 
 }
