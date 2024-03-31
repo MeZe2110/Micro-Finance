@@ -2,6 +2,7 @@ package tn.esprit.fundsphere.Services.TransactionService;
 
 import jakarta.transaction.Transactional;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.PathVariable;
 import tn.esprit.fundsphere.Entities.AccountManagment.Account;
 import tn.esprit.fundsphere.Entities.TransactionManagment.Transaction;
 
@@ -30,6 +31,9 @@ public interface ITransactionService {
     Map<String, Double> calculateStatistics(Long accountId);
 
     Map<String, Double> calculateAutomaticTransferStatistics();
+
+
+
 
 
 }
