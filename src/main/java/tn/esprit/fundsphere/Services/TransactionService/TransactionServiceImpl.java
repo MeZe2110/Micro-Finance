@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-/*import tn.esprit.fundsphere.Config.EmailService;
-import tn.esprit.fundsphere.Config.Mail;*/
+import tn.esprit.fundsphere.Config.EmailService;
+import tn.esprit.fundsphere.Config.Mail;
 import tn.esprit.fundsphere.Entities.AccountManagment.Account;
 import tn.esprit.fundsphere.Entities.TransactionManagment.AutomaticTransfer;
 import tn.esprit.fundsphere.Entities.TransactionManagment.Transaction;
@@ -31,8 +31,8 @@ public class TransactionServiceImpl implements ITransactionService {
     private TransactionRepository transactionRepository;
     @Autowired
     private AutomaticTransferRepository automaticTransferRepository;
-    /*@Autowired
-    private EmailService emailService;*/
+    @Autowired
+    private EmailService emailService;
 
 
     @Override
@@ -46,11 +46,11 @@ public class TransactionServiceImpl implements ITransactionService {
 
         double senderNewBalance = sender.getBalance() - transaction.getAmount();
         if (senderNewBalance < 0) {
-           /* Mail mail = new Mail();
+            Mail mail = new Mail();
             mail.setTo(sender.getUser().getEmail());
             mail.setSubject("Transaction Failed: Insufficient Funds");
             mail.setContent("Dear " + sender.getUser().getName() + ",\n\nYour transaction of " + transaction.getAmount() + " has been declined due to insufficient funds.");
-            emailService.sendSimpleEmail(mail);*/
+            emailService.sendSimpleEmail(mail);
 
             throw new IllegalArgumentException("Insufficient funds in sender's account");
         }
@@ -66,11 +66,11 @@ public class TransactionServiceImpl implements ITransactionService {
         transaction.setReceiver(receiver);
         Transaction savedTransaction = transactionRepository.save(transaction);
 
-        /*Mail successMail = new Mail();
+        Mail successMail = new Mail();
         successMail.setTo(sender.getUser().getEmail());
         successMail.setSubject("Transaction Successful");
         successMail.setContent("Dear  " + sender.getUser().getName() + ",\n\nYour transaction of " + transaction.getAmount() + " to " + receiver.getUser().getName() + " has been successfully completed.");
-        emailService.sendSimpleEmail(successMail);*/
+        emailService.sendSimpleEmail(successMail);
 
         return savedTransaction;
     }

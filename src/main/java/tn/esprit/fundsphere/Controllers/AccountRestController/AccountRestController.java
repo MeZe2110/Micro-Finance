@@ -66,8 +66,8 @@ public class AccountRestController {
        authenticationService.assignUserToAccount(idAccount, idUser);
     }
 
-    @PutMapping("/desaffecgter-user-a-account/{idAccount}")
-    public void assignCreditToAccount(@PathVariable("idAccount") Long idAccount) {
+    @PutMapping("/desaffecter-user-a-account/{idAccount}")
+    public void unassignUserToAccount(@PathVariable("idAccount") Long idAccount) {
         authenticationService.unassignUserToAccount(idAccount);
     }
 
