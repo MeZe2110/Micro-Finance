@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import tn.esprit.fundsphere.Entities.AccountManagment.Account;
 import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
 import tn.esprit.fundsphere.Services.AccountService.AccountServiceImpl;
+import tn.esprit.fundsphere.Services.UserService.AuthenticationService;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class AccountRestController {
 
 
     public AccountServiceImpl accountService;
+    public AuthenticationService authenticationService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable("id") Long accountId) {
@@ -47,10 +49,29 @@ public class AccountRestController {
 
 
 
-
     @DeleteMapping(path = "/delete-account/{id}")
     public void deleteAccount(@PathVariable ("id") Long idAccount) {
         accountService.deleteAccount(idAccount);
     }
+
+
+
+
+    //afectation
+
+
+   @PutMapping("/affecter-user-a-account/{user-id}/{idAccount}")
+    public void assignUserToAccount(@PathVariable("user-id") Integer idUser,
+                                      @PathVariable("idAccount") Long idAccount) {
+       authenticationService.assignUserToAccount(idAccount, idUser);
+    }
+
+    @PutMapping("/desaffecgter-user-a-account/{idAccount}")
+    public void assignCreditToAccount(@PathVariable("idAccount") Long idAccount) {
+        authenticationService.unassignUserToAccount(idAccount);
+    }
+
+
+
 
 }

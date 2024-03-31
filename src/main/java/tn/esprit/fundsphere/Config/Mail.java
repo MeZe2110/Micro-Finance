@@ -1,6 +1,6 @@
 package tn.esprit.fundsphere.Config;
 
-import lombok.*;
+/*import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Getter
@@ -13,4 +13,4 @@ public class Mail {
     String to;
     String subject;
     String content;
-}
+}*/
