@@ -1,5 +1,6 @@
 package tn.esprit.fundsphere.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -20,19 +21,13 @@ import tn.esprit.fundsphere.filter.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final UserDetailsServiceImp userDetailsServiceImp;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final CustomAccesDeniedHandler accesDeniedHandler;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
     private final CustomLogoutHandler logoutHandler;
-
-    public SecurityConfig(UserDetailsServiceImp userDetailsServiceImp, JwtAuthenticationFilter jwtAuthenticationFilter, CustomAccesDeniedHandler accesDeniedHandler, CustomLogoutHandler logoutHandler) {
-        this.userDetailsServiceImp = userDetailsServiceImp;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.accesDeniedHandler = accesDeniedHandler;
-        this.logoutHandler = logoutHandler;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -43,10 +38,16 @@ public class SecurityConfig {
                              .permitAll()
                              .requestMatchers("/admin-only/**")
                              .hasAuthority("ADMIN")
+                             .requestMatchers("/client-only/**")
+                             .hasAuthority("CLIENT")
+                             .requestMatchers("/investor-only/**")
+                             .hasAuthority("INVESTOR")
+                             .requestMatchers("/trainer-only/**")
+                             .hasAuthority("TRAINER")
                              .anyRequest()
                              .authenticated()
                 ).userDetailsService(userDetailsServiceImp)
-                .exceptionHandling(e->e.accessDeniedHandler(accesDeniedHandler).authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .exceptionHandling(e->e.accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(l->l.logoutUrl("/logout")

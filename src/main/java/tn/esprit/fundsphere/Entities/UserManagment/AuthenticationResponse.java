@@ -1,13 +1,17 @@
 package tn.esprit.fundsphere.Entities.UserManagment;
 
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
-@Getter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class AuthenticationResponse {
-    private String token;
-    private String message;
+    @JsonProperty("access_token")
+    private String accessToken;
+    @JsonProperty("refresh_token")
+    private String refreshToken;
 
-    public AuthenticationResponse(String token) {
-        this.token = token;
-    }
+
 }

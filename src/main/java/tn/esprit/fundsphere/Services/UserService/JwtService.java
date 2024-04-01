@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import tn.esprit.fundsphere.Entities.UserManagment.User;
@@ -14,15 +15,18 @@ import java.util.Date;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
+
 
     private final String SECRET_KEY="6dc61ea78fb65f94fb22c249a0fb569d4c0da19e723303468e2d5fddaa15850d";
 
-    private final TokenRepository tokenRepository;
+    private final long jwtExpiration = 86400000;
 
-    public JwtService(TokenRepository tokenRepository) {
-        this.tokenRepository = tokenRepository;
-    }
+    private final long jwtRefresh = 604800000;
+
+
+    private final TokenRepository tokenRepository;
 
     private Claims extractAllClaims(String token){
         return Jwts.parserBuilder()
@@ -62,13 +66,24 @@ public class JwtService {
     }
 
     public String generateToken(User user){
-        String token = Jwts.builder()
+
+        return buildToken(user,jwtExpiration);
+    }
+
+    public String generateRefreshToken(User user){
+
+        return buildToken(user,jwtRefresh);
+    }
+
+    private String buildToken(User user , Long expiration){
+
+       String token = Jwts.builder()
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 24*60*1000*60))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigninKey())
                 .compact();
-        return token;
+    return token;
     }
 
     private SecretKey getSigninKey(){

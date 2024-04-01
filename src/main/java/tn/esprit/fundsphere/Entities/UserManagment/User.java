@@ -41,7 +41,7 @@ public class User implements UserDetails {
     private Set<Account> accounts;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Trainig> trainigs;
+    private Set<Trainig> trainings;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Investment> investments;
