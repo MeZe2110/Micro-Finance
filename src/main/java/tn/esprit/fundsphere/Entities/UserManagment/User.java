@@ -16,6 +16,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "user")
 public class User implements UserDetails {
     @Id
@@ -23,8 +24,12 @@ public class User implements UserDetails {
     private Integer idUser;
 
     private String firstname;
+
     private String lastname;
+
+    @Column(unique = true)
     private String username;
+
     private String password;
 
     @Enumerated(EnumType.STRING)

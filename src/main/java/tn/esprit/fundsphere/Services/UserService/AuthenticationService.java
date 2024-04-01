@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,21 +37,30 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(User request) {
-        User user = new User();
-        user.setFirstname(request.getFirstname());
-        user.setLastname(request.getLastname());
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole());
+        try {
+            User user = new User();
+            user.setFirstname(request.getFirstname());
+            user.setLastname(request.getLastname());
+            user.setUsername(request.getUsername());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setRole(request.getRole());
 
-        user = repository.save(user);
-        String token = jwtService.generateToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
+            user = repository.save(user);
+            String token = jwtService.generateToken(user);
+            String refreshToken = jwtService.generateRefreshToken(user);
 
-        saveToken(token, user);
+            saveToken(token, user);
 
-        return new AuthenticationResponse(token,refreshToken);
+            return new AuthenticationResponse(token, refreshToken);
+        } catch (DataIntegrityViolationException e) {
+            // Username already exists, provide a custom error message
+            throw new IllegalArgumentException("Username is already taken. Please choose a different username.");
+        }
 
+    }
+    public boolean isUserExists(String username) {
+        // Check if a user with the given username exists in the database
+        return repository.existsByUsername(username);
     }
 
 
