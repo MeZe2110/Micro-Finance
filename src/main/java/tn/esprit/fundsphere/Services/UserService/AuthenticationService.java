@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import tn.esprit.fundsphere.Entities.UserManagment.AuthenticationResponse;
 import tn.esprit.fundsphere.Entities.UserManagment.Token;
 import tn.esprit.fundsphere.Entities.UserManagment.User;
+import tn.esprit.fundsphere.Exceptions.UsernameAlreadyTakenException;
 import tn.esprit.fundsphere.Repositories.UserRepository.TokenRepository;
 import tn.esprit.fundsphere.Repositories.UserRepository.UserRepository;
 
@@ -37,7 +38,12 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(User request) {
-        try {
+        if (repository.existsByUsername(request.getUsername()))
+        {
+            throw new UsernameAlreadyTakenException("Username is already taken. Please choose a different username.");
+        }
+
+          else {
             User user = new User();
             user.setFirstname(request.getFirstname());
             user.setLastname(request.getLastname());
@@ -52,9 +58,6 @@ public class AuthenticationService {
             saveToken(token, user);
 
             return new AuthenticationResponse(token, refreshToken);
-        } catch (DataIntegrityViolationException e) {
-            // Username already exists, provide a custom error message
-            throw new IllegalArgumentException("Username is already taken. Please choose a different username.");
         }
 
     }
