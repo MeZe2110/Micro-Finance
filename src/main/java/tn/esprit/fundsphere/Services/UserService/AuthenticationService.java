@@ -2,40 +2,40 @@ package tn.esprit.fundsphere.Services.UserService;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import tn.esprit.fundsphere.Entities.UserManagment.AuthenticationResponse;
 import tn.esprit.fundsphere.Entities.UserManagment.Token;
 import tn.esprit.fundsphere.Entities.UserManagment.User;
+import tn.esprit.fundsphere.Entities.UserManagment.VerificaitonRequest;
 import tn.esprit.fundsphere.Exceptions.UsernameAlreadyTakenException;
 import tn.esprit.fundsphere.Repositories.UserRepository.TokenRepository;
 import tn.esprit.fundsphere.Repositories.UserRepository.UserRepository;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+
     private final UserRepository repository;
+
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-
     private final TokenRepository tokenRepository;
     private final AuthenticationManager authenticationManager;
+
+    private final TwoFactorsAuthenticationService twoFactorsAuthenticationService;
 
     public AuthenticationResponse register(User request) {
         if (repository.existsByUsername(request.getUsername()))
@@ -44,20 +44,32 @@ public class AuthenticationService {
         }
 
           else {
-            User user = new User();
-            user.setFirstname(request.getFirstname());
-            user.setLastname(request.getLastname());
-            user.setUsername(request.getUsername());
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
-            user.setRole(request.getRole());
+            var user =User.builder()
+                    .firstname(request.getFirstname())
+                    .lastname(request.getLastname())
+                    .username(request.getUsername())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .role(request.getRole())
+                    .mfaEnabled(request.isMfaEnabled())
+                    .build();
 
-            user = repository.save(user);
+            if (request.isMfaEnabled())
+            {
+                user.setSecret(twoFactorsAuthenticationService.generateNewSecret());
+            }
+            repository.save(user);
             String token = jwtService.generateToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
+            String secretImageUri = twoFactorsAuthenticationService.generateQrCodeImageUri(user.getSecret());
 
             saveToken(token, user);
 
-            return new AuthenticationResponse(token, refreshToken);
+            return AuthenticationResponse.builder()
+                    .secretImageUri(secretImageUri)
+                    .accessToken(token)
+                    .refreshToken(refreshToken)
+                    .mfaEnabled(user.isMfaEnabled())
+                    .build();
         }
 
     }
@@ -72,14 +84,28 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
                         request.getPassword()));
+
         User user = repository.findByUsername(request.getUsername()).orElseThrow();
+        if (user.isMfaEnabled())
+        {
+
+            return  AuthenticationResponse.builder()
+                    .accessToken("")
+                    .refreshToken("refreshToken")
+                    .mfaEnabled(true)
+                    .build();
+        }
+
         String token = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-
         revokeAllTokenByUser(user);
 
         saveToken(token,user);
-        return  new AuthenticationResponse(token,refreshToken);
+        return  AuthenticationResponse.builder()
+                .accessToken(token)
+                .refreshToken(refreshToken)
+                .mfaEnabled(false)
+                .build();
     }
 
     private void revokeAllTokenByUser(User user) {
@@ -130,6 +156,22 @@ public class AuthenticationService {
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }
+    }
+
+    public AuthenticationResponse verifyCode(VerificaitonRequest verificaitonRequest) {
+        User user =repository.findByUsername(verificaitonRequest.getUsername())
+                .orElseThrow(()-> new EntityNotFoundException(String.format("user not found %S",verificaitonRequest.getUsername())));
+
+        if (twoFactorsAuthenticationService.isOtpNotValid(user.getSecret(), verificaitonRequest.getCode()))
+        {
+            throw new BadCredentialsException("Code is not correct");
+        }
+        var jwt =jwtService.generateToken(user);
+
+        return AuthenticationResponse.builder()
+                .accessToken(jwt)
+                .mfaEnabled(user.isMfaEnabled())
+                .build();
     }
 }
 

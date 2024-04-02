@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tn.esprit.fundsphere.Entities.UserManagment.AuthenticationResponse;
 import tn.esprit.fundsphere.Entities.UserManagment.User;
+import tn.esprit.fundsphere.Entities.UserManagment.VerificaitonRequest;
 import tn.esprit.fundsphere.Services.UserService.AuthenticationService;
 
 import java.io.IOException;
@@ -26,9 +27,14 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody User request){
+    public ResponseEntity<?> register(@RequestBody User request){
 
-    return ResponseEntity.ok(authenticationService.register(request));
+        var response = authenticationService.register(request);
+        if (request.isMfaEnabled()){
+            return ResponseEntity.ok(response);
+        }
+
+    return ResponseEntity.accepted().build();
     }
 
     @PostMapping("/login")
@@ -44,5 +50,10 @@ public class AuthenticationController {
             HttpServletResponse response
     ) throws IOException {
         authenticationService.refreshToken(request, response);
+    }
+
+    @PostMapping("/verify")
+    public  ResponseEntity<?> verifyCode(@RequestBody VerificaitonRequest verificaitonRequest){
+        return ResponseEntity.ok(authenticationService.verifyCode(verificaitonRequest));
     }
 }
