@@ -24,7 +24,7 @@ public class Claims {
     String answer ;
     Date dateAnswer ;
 
-    @ManyToOne
+   /* @ManyToOne
     @JsonIgnore
-    private User user ;
+    private User user ;*/
 }

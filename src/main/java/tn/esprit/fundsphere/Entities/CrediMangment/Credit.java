@@ -31,9 +31,9 @@ public class Credit {
     String decision ;
     float amountRecoveryMonth ;
 
-  @ManyToOne
+  /*@ManyToOne
   @JsonIgnore
-    private Account account;
+    private Account account;*/
 
   @OneToMany(mappedBy = "credit")
     private List<Tranche> tranches;

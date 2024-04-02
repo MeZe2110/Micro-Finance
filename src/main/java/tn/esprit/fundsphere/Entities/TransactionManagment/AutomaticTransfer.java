@@ -1,13 +1,16 @@
 package tn.esprit.fundsphere.Entities.TransactionManagment;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import tn.esprit.fundsphere.Entities.AccountManagment.Account;
+import tn.esprit.fundsphere.Entities.AccountManagment.TypeAccount;
+import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
+import tn.esprit.fundsphere.Entities.UserManagment.User;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,29 +18,23 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "transaction")
 @ToString
-public class Transaction {
+public class AutomaticTransfer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long idTransaction;
-
-    double amount;
-
-    LocalDate date;
-
-    @Enumerated(EnumType.STRING)
-    TypeTransaction typeT;
+    @JsonIgnore
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id", nullable = false)
+    @JoinColumn(name = "sender_id")
     private Account sender;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_id", nullable = false)
+    @JoinColumn(name = "receiver_id")
     private Account receiver;
 
-    private boolean automaticTransaction;
-}
+    private double amount;
 
+
+}

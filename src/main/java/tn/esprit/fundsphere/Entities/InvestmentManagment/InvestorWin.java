@@ -3,10 +3,8 @@ package tn.esprit.fundsphere.Entities.InvestmentManagment;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import tn.esprit.fundsphere.Entities.UserManagment.User;
 
 import java.util.Date;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -23,6 +21,4 @@ public class InvestorWin {
     Date dateInvW ;
     Float ROI;
 
-    @OneToMany(mappedBy = "investorWin")
-    private Set<User> users;
 }
