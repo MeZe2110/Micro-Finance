@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import tn.esprit.fundsphere.Services.UserService.UserDetailsServiceImp;
 import tn.esprit.fundsphere.filter.JwtAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -34,30 +36,28 @@ public class SecurityConfig {
         this.logoutHandler = logoutHandler;
     }
 
+
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                     req->req.requestMatchers("/login/**","/register/**")
-                             .permitAll()
-                             .requestMatchers("/admin-only/**")
-                             .hasAuthority("ADMIN")
-                             .anyRequest()
-                             .authenticated()
-                ).userDetailsService(userDetailsServiceImp)
-                .exceptionHandling(e->e.accessDeniedHandler(accesDeniedHandler).authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests()
+                .anyRequest().permitAll()
+                .and()
+                .userDetailsService(userDetailsServiceImp)
+                .exceptionHandling(e -> e.accessDeniedHandler(accesDeniedHandler).authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .logout(l->l.logoutUrl("/logout")
+                .logout(l -> l.logoutUrl("/logout")
                         .addLogoutHandler(logoutHandler)
                         .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()))
                 .build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return  new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
