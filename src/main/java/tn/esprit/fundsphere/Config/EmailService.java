@@ -11,7 +11,6 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
-
     public void sendSimpleEmail(final Mail mail) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("noreply@fundsphere.com");
@@ -20,5 +19,9 @@ public class EmailService {
         message.setText(mail.getContent());
         mailSender.send(message);
     }
-
+    public void sendEmail(String recipient, String subject, String content) {
+        System.out.println("Sending email to: " + recipient);
+        System.out.println("Subject: " + subject);
+        System.out.println("Content: " + content);
+    }
 }

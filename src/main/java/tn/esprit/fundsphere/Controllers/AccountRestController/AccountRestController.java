@@ -1,36 +1,55 @@
 package tn.esprit.fundsphere.Controllers.AccountRestController;
 
-
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.fundsphere.Entities.AccountManagment.Account;
-import tn.esprit.fundsphere.Services.AccountService.IAccountService;
-import tn.esprit.fundsphere.Services.CreditService.CreditServiceImpl;
-import tn.esprit.fundsphere.Services.CreditService.ICreditService;
+import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
+import tn.esprit.fundsphere.Services.AccountService.AccountServiceImpl;
+
+import java.util.List;
 
 @RestController
-@CrossOrigin("*")
+@AllArgsConstructor
 @RequestMapping("/account")
-@RequiredArgsConstructor
-public class AccountRestController {
-    public IAccountService accountService;
-    public ICreditService creditService;
 
-    @PostMapping("/add")
+public class AccountRestController {
+
+
+    public AccountServiceImpl accountService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Account> getAccountById(@PathVariable("id") Long accountId) {
+        Account account = accountService.getAccountById(accountId);
+        return ResponseEntity.ok().body(account);
+    }
+    @PostMapping(path = "/add-account")
     public Account addAccount(@RequestBody Account account) {
         return accountService.addAccount(account);
     }
 
-    @PutMapping("/affecter-credit-a-account/{credit-id}/{idAccount}")
-    public void assignCreditToAccount(@PathVariable("credit-id") Long idCredit,
-                                       @PathVariable("idAccount") Long idAccount) {
-        creditService.assignCreditToAccount(idCredit, idAccount);
+    @GetMapping("/show-account")
+    public List<Account> getAllaccounts() {
+        List<Account> listAccounts = accountService.getAllaccount();
+        return listAccounts;
     }
 
-    @PutMapping("/desaffecgter-credit-a-account/{credit-id}")
-    public void assignCreditToAccount(@PathVariable("credit-id") Long idCredit) {
-        creditService.unassignCreditToAccount(idCredit );
+
+
+    @PutMapping(path = "/update-account")
+    public Account updateAccount(@RequestBody Account Ac)
+    {
+
+        Account account = accountService.updateAccount(Ac);
+        return account ;
     }
+
+
+
+
+    @DeleteMapping(path = "/delete-account/{id}")
+    public void deleteAccount(@PathVariable ("id") Long idAccount) {
+        accountService.deleteAccount(idAccount);
+    }
+
 }
-
-

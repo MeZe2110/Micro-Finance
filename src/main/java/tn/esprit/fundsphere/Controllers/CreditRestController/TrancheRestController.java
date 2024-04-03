@@ -2,6 +2,7 @@ package tn.esprit.fundsphere.Controllers.CreditRestController;
 
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.fundsphere.Entities.ClaimsManagment.Claims;
@@ -35,6 +36,12 @@ public class TrancheRestController {
         trancheService.deleteTranche(idTranche);
     }
 
+    @DeleteMapping(path = "/delete-tranches")
+    public void deleteTranches() {
+        trancheService.deleteTranches();
+    }
+
+
 
     @PutMapping(path = "/update-tranche")
     public Tranche updateTranche(@RequestBody Tranche t) {
@@ -43,13 +50,10 @@ public class TrancheRestController {
         return tranches;
     }
 
-<<<<<<< HEAD
-=======
     @GetMapping("/verif-tranche")
-    public void verifyTrancheAmountInAccount() {
+    public void verifyTrancheAmountInAccount() throws ChangeSetPersister.NotFoundException {
         trancheService.verifyTrancheAmountInAccount();
     }
->>>>>>> 9ab4a29 (fonctions avancées étape 2)
 
 }
 

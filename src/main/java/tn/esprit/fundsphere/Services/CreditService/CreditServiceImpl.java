@@ -2,7 +2,7 @@ package tn.esprit.fundsphere.Services.CreditService;
 
 import lombok.AllArgsConstructor;
 
-import org.joda.time.LocalDate;
+//import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.fundsphere.Config.EmailService;
@@ -29,7 +29,7 @@ public class CreditServiceImpl implements ICreditService{
     private CreditRepository creditRepository;
     private TrancheRepository trancheRepository;
     private final EmailService emailService;
-    private final SMSService smsService;
+   // private final SMSService smsService;
     private AccountRepository accountRepository ;
 
     @Override
@@ -117,13 +117,13 @@ public class CreditServiceImpl implements ICreditService{
             mail.setContent("Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+" , we inform you that your credit application has been Declined.");
             emailService.sendSimpleEmail(mail);
 
-            smsService.sendSMS(String.valueOf(50585563),"Welcome to FundSphere \n\r"
+            /*smsService.sendSMS(String.valueOf(50585563),"Welcome to FundSphere \n\r"
                     .concat("Mrs,Mr : "
                             .concat(credit.getSurnameClient()
                                     .concat(" "+credit.getNameClient())
                                     .concat("\"we inform you that your credit application has been Declined.\n\r "))));
 
-        }else
+       */ }else
         {
             creditRepository.save(credit);
 
@@ -140,20 +140,6 @@ public class CreditServiceImpl implements ICreditService{
         return creditRepository.findById(idCredit).get();
     }
 
-    public void assignCreditToAccount( Long idCredit , Long idAccount) {
-        Credit credit = creditRepository.findById(idCredit).get();
-        Account account = accountRepository.findById(idAccount).get();
-// on set le fils dans le parent :
-        credit.setAccount(account);
-        creditRepository.save(credit);
-    }
 
-
-    public void unassignCreditToAccount(Long idCredit) {
-        Credit credit = creditRepository.findById(idCredit).get();
-// on set le fils dans le parent :
-        credit.setAccount(null);
-        creditRepository.save(credit);
-    }
 
 }

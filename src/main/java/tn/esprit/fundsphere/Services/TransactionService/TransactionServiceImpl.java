@@ -1,6 +1,5 @@
 package tn.esprit.fundsphere.Services.TransactionService;
 
-import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.slf4j.LoggerFactory;
@@ -38,7 +37,7 @@ public class TransactionServiceImpl implements ITransactionService {
 
     @Override
     @Transactional
-    public Transaction addTransaction(Transaction transaction) throws MessagingException {
+    public Transaction addTransaction(Transaction transaction) {
         Optional<Account> optionalSender = accountRepository.findById(transaction.getSender().getIdAccount());
         Account sender = optionalSender.orElseThrow(() -> new IllegalArgumentException("Sender not found"));
 
@@ -51,7 +50,7 @@ public class TransactionServiceImpl implements ITransactionService {
             mail.setTo(sender.getUser().getEmail());
             mail.setSubject("Transaction Failed: Insufficient Funds");
             mail.setContent("Dear " + sender.getUser().getName() + ",\n\nYour transaction of " + transaction.getAmount() + " has been declined due to insufficient funds.");
-            emailService.sendHtmlEmail(mail);
+            emailService.sendSimpleEmail(mail);
 
             throw new IllegalArgumentException("Insufficient funds in sender's account");
         }
@@ -71,7 +70,7 @@ public class TransactionServiceImpl implements ITransactionService {
         successMail.setTo(sender.getUser().getEmail());
         successMail.setSubject("Transaction Successful");
         successMail.setContent("Dear  " + sender.getUser().getName() + ",\n\nYour transaction of " + transaction.getAmount() + " to " + receiver.getUser().getName() + " has been successfully completed.");
-        emailService.sendHtmlEmail(successMail);
+        emailService.sendSimpleEmail(successMail);
 
         return savedTransaction;
     }
@@ -158,35 +157,35 @@ public class TransactionServiceImpl implements ITransactionService {
             return false;
         }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//    @Override
+//    public Map<String, Object> calculateStatistics() {
+//        Map<String, Object> statistics = new HashMap<>();
+//
+//        Double totalAmount = transactionRepository.getTotalAmountOfTransactions();
+//        statistics.put("Total Amount of Transactions", totalAmount);
+//
+//        Double averageAmount = transactionRepository.getAverageTransactionAmount();
+//        statistics.put("Average Transaction Amount", averageAmount);
+//
+//        Map<TypeTransaction, Long> transactionsByType = transactionRepository.countTransactionsByType();
+//        statistics.put("Transactions by Type", transactionsByType);
+//
+//        Map<Account, Double> totalAmountBySender = transactionRepository.getTotalAmountTransferredBySender();
+//        statistics.put("Total Amount Transferred by Sender", totalAmountBySender);
+//
+//        int topN = 5;
+//        List<Account> topAccountsByAmount = transactionRepository.getTopAccountsByTransactionAmount(topN);
+//        Map<Long, Double> topAccountsAmountMap = topAccountsByAmount.stream()
+//                .collect(Collectors.toMap(Account::getNumAccount, account -> transactionRepository.getTotalAmountTransferredBySender(account)));
+//        statistics.put("Top Accounts by Transaction Amount", topAccountsAmountMap);
+//
+//
+//        return statistics;
+//    }
+//    @Override
+//    public List<Transaction> getTransactionsBySender(Account sender) {
+//        return transactionRepository.findBySender(sender);
+//    }
 @Override
 public Map<String, Double> calculateStatistics(Long accountId) {
     Map<String, Double> statistics = new HashMap<>();

@@ -47,9 +47,8 @@ public class Credit {
     @Positive(message = "the recoverySince must be positif")
     int recoverySince ;
 
-    @NotBlank(message = "The description cannot be empty.")
-    @Size(min =2 , message = "The description must be at least 2 characters long.")
-    String decision ;
+
+    boolean creditState =false;
 
     //@Positive(message = "the amountRecoveryMonth must be positif")
     float amountRecoveryMonth ;
