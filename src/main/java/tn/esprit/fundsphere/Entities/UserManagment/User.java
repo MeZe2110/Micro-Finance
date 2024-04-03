@@ -1,22 +1,13 @@
 package tn.esprit.fundsphere.Entities.UserManagment;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import tn.esprit.fundsphere.Entities.AccountManagment.Account;
 import tn.esprit.fundsphere.Entities.ClaimsManagment.Claims;
 import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
-import tn.esprit.fundsphere.Entities.TrainigManagment.Feedback;
-import tn.esprit.fundsphere.Entities.TrainigManagment.TrainingInscription;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -25,69 +16,24 @@ import java.util.Set;
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "user")
-public class User implements UserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Integer idUser ;
+    int idUser ;
     String name ;
+    String surname ;
+    String userName ;
+    String password ;
     String Email ;
-    String username;
-    String password;
-
-
+    String address ;
+    int cin ;
+    int phone ;
+    Date birthdate ;
+    Date creationDate ;
     @Enumerated(EnumType.STRING)
-    Role role;
-
-/*    @OneToMany(mappedBy = "user")
-    private List<Claims>claims;*/
+    TypeUser role;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    Set<Feedback> feedbacks;
+    private List<Claims>claims;
 
-    @ManyToMany(mappedBy = "users")
-    @JsonIgnore
-    Set<TrainingInscription> trainingInscriptions;
-
-
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private List<Account> accounts;
-
-    @OneToMany(mappedBy = "user")
-    private List<Token> tokens;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
-    }
-
-    @Override
-    public String getUsername(){
-        return username;
-    }
-
-    @Override
-    public String getPassword(){
-        return password;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

@@ -2,5 +2,5 @@ package tn.esprit.fundsphere.Entities.TransactionManagment;
 
 public enum TypeTransaction {
 
-    TRANSFER ,DEPOSIT , INVESTMENT ,AUTO_TRANSFER;
+    TRANSFER ,DEPOSIT , INVESTMENT ;
 }

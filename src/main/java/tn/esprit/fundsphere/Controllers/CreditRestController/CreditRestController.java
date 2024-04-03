@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.fundsphere.Entities.ClaimsManagment.Claims;
 import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
-import tn.esprit.fundsphere.Services.AccountService.IAccountService;
 import tn.esprit.fundsphere.Services.CreditService.CreditServiceImpl;
 import tn.esprit.fundsphere.Services.CreditService.TrancheServiceImpl;
 
@@ -23,7 +22,6 @@ public class CreditRestController {
 
     public CreditServiceImpl creditService ;
     public TrancheServiceImpl trancheService ;
-    public IAccountService accountService;
 
    /* @PostMapping(path = "/add-credit")
     public Credit addCredit (@RequestBody Credit credit)
@@ -92,18 +90,9 @@ public class CreditRestController {
         trancheService.assignTranchesToCredit(idTranche, idCredit);
     }
 
-    @PutMapping("/desaffecgter-tranche-a-credit/{tranche-id}/{idCredit}")
-    public void dessignerTrancheToCredit(@PathVariable("tranche-id") Long idTranche) {
+    @PutMapping("/desaffecgter-bloc-a-idFoyer/{tranche-id}/{idCredit}")
+    public void dessignerTrancheToCredit(@PathVariable("tranche-id") Long idTranche,
+                                         @PathVariable("idCredit") Long idCredit) {
         trancheService.dessignerTrancheToCredit(idTranche );
-    }
-    @PutMapping("/affecter-credit-a-account/{credit-id}/{idAccount}")
-    public void assignCreditToAccount(@PathVariable("credit-id") Long idCredit,
-                                      @PathVariable("idAccount") Long idAccount) {
-        accountService.assignCreditToAccount(idCredit, idAccount);
-    }
-
-    @PutMapping("/desaffecgter-credit-a-account/{credit-id}") //client-only/
-    public void assignCreditToAccount(@PathVariable("credit-id") Long idCredit) {
-        accountService.unassignCreditToAccount(idCredit );
     }
 }

@@ -7,5 +7,5 @@ import tn.esprit.fundsphere.Entities.CrediMangment.Tranche;
 import java.util.List;
 
 public interface TrancheRepository extends JpaRepository<Tranche,Long> {
-    List<Tranche> findByCredit(Credit credit);
+    List<Tranche> findByCredit(Credit credit ) ;
 }

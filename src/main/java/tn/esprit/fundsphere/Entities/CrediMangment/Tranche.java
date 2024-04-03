@@ -8,10 +8,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Calendar;
 import java.util.Date;
-
-//import org.joda.time.LocalDate;
 
 @Getter
 @Setter
@@ -24,7 +21,7 @@ public class Tranche {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Long idTranche;
-    boolean status=false;
+    boolean status ;
 
     //@NotNull(message = "The Limit date cannot be null.")
     Date dateLimit ;

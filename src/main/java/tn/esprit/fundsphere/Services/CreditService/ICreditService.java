@@ -15,6 +15,6 @@ public interface ICreditService {
     public Credit updateStateCredit(Credit credit);
     public List<Credit> getAllCredits();
     public Credit getCredit(Long idCredit);
-//    public void assignCreditToAccount( Long idCredit , Long idAccount);
-//    public void unassignCreditToAccount(Long idCredit);
+    public void assignCreditToAccount( Long idCredit , Long idAccount);
+    public void unassignCreditToAccount(Long idCredit);
 }

@@ -3,9 +3,6 @@ package tn.esprit.fundsphere.Services.CreditService;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import tn.esprit.fundsphere.Config.EmailService;
@@ -21,28 +18,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-//@AllArgsConstructor
+@AllArgsConstructor
 @Slf4j
-public class TrancheServiceImpl implements ITrancheService {
+public class TrancheServiceImpl implements ITrancheService{
 
-    @Autowired
-    private TrancheRepository trancheRepository;
-
-    @Autowired
-    private CreditRepository creditRepository;
-
-    @Autowired
+    private TrancheRepository trancheRepository ;
+    private CreditRepository creditRepository ;
     private AccountRepository accountRepository;
-
     private EmailService emailService;
-
-   // private final SMSService smsService = new SMSService();
-
-
-    private int currentTrancheIndex = 0;
-    private float alreadyPayed = 0;
-
-    private float accountBalance = 13000;
 
     @Override
     public Tranche addTranche(Tranche tranche) {
@@ -57,27 +40,32 @@ public class TrancheServiceImpl implements ITrancheService {
     }
 
     @Override
-    public void deleteTranches() {
-        trancheRepository.deleteAll();
-
-
-    }
-
-    @Override
     public Tranche updateTranche(Tranche tranche) {
         return trancheRepository.save(tranche);
     }
 
     @Override
-    public List<Tranche> getAllTranches() {
+    public List<Tranche> getAllTranches()
+    {
         return trancheRepository.findAll();
     }
 
     @Override
-    public Tranche getTranche(Long idTranche) {
+    public Tranche getTranche(Long idTranche)
+    {
         return trancheRepository.findById(idTranche).get();
     }
 
+//    public void assignTranchesToCredit(Long idCredit, List<Long> idTranche) {
+//        Credit credit = creditRepository.findById(idCredit).orElseThrow(() -> new IllegalArgumentException("Credit not found"));
+//        List<Tranche> tranches = trancheRepository.findAllById(idTranche);
+//
+//        // On set le parent dans les fils :
+//        tranches.forEach(tranche -> tranche.setCredit(credit));
+//
+//        credit.setTranches(tranches);
+//        creditRepository.save(credit);
+//    }
     public void assignTranchesToCredit(Long idTranche, Long idCredit) {
         Tranche tranche = trancheRepository.findById(idTranche).get();
         Credit credit = creditRepository.findById(idCredit).get();
@@ -94,95 +82,35 @@ public class TrancheServiceImpl implements ITrancheService {
         trancheRepository.save(tranche);
     }
 
-
-    //@Scheduled(cron = "0 0 0 1 * ?") // Exécuter le 1er jour de chaque mois à minuit
-    @Scheduled(fixedDelay = 60000)
-    public void verifyTrancheAmountInAccount() throws ChangeSetPersister.NotFoundException {
-        List<Credit> credits = creditRepository.findByState(1);
-        log.info("nbre de credit" + credits.size());
-
+    // @Scheduled(cron = "0 0 0 1 * ?") // Exécuter le 1er jour de chaque mois à minuit
+   // @Scheduled(fixedRate = 5000)
+    public void verifyTrancheAmountInAccount() {
+        //verif si le montant maoujoud fil compte
+        List<Credit> credits = creditRepository.findByState(1); // confirmé
         for (Credit credit : credits) {
             List<Tranche> tranches = trancheRepository.findByCredit(credit);
-            log.info("nbre de credit" + tranches.size());
+            for (Tranche tranche : tranches) {
+                double amount = tranche.getAmount();
+                Account account = credit.getAccount();
+                log.info("hello from for");
+                double accountBalance = account.getBalance();
 
-            if (credit.getState() == 1) {
-                log.info("state 1");
-                if (currentTrancheIndex < tranches.size()) {
-                    log.info("tranche ");
-                    Tranche tranche = tranches.get(currentTrancheIndex);
-
-                    float amountTranche = tranche.getAmount();
-log.info ("tranche Amount" +tranche.getAmount());
+                if (accountBalance < amount) {
+                    log.info("hello");
+                    // Envoyer un e-mail d'alerte
+//                    String subject = "Alerte: Montant de la tranche manquant dans le compte";
+//                    String content = "Cher utilisateur,\n\nLe montant de la tranche mensuelle de " + amount + " est manquant dans votre compte.";
+////                    emailService.sendEmail(account.getUser().getEmail(), subject, content);
+//                    Mail mail = new Mail();
 //
-                    //
-                    
-log.info ("Tranche credit " +tranche.getCredit());
-log.info ("tranche account "+tranche.getCredit().getAccount());
-                    // float accountBalance = account.getBalance(); // account.getBalance()
-                    // Récupérer l'ID de l'account associé à la tranche
-                   /* Long idAccount = tranche.getCredit().getAccount().getIdAccount();
-log.info("idAccount : " +idAccount);
-                    // Utiliser l'ID pour récupérer l'account correspondant
-                    Account account = accountRepository.findById(idAccount).orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+//                    mail.setSubject("Amount Tranche");
+//                    mail.setTo("mayssendridi21@gmail.com");
+//                    mail.setContent("Mrs,Mr  , you are informed that you do not have the necessary amount in your account .");
+//                    emailService.sendSimpleEmail(mail);
 
-                    // Récupérer le solde de l'account
-                    double accountBalance = account.getBalance();*/
-
-                    if (accountBalance < amountTranche) {
-                        tranche.setStatus(false);
-                        tranche.setRateRecovery(alreadyPayed);
-
-                        System.out.println("Mrs,Mr " + credit.getSurnameClient() + " " + credit.getNameClient() + ",\nWe'd like to inform you that your account has not been debited by the amount of " + credit.getAmountRecoveryMonth() + " for " + tranche.getDateLimit() + "\nThe total amount already payed is " + tranche.getRateRecovery() + ".\nPlease contact us for more information.");
-
-// Envoyer un e-mail en cas d'echec
-
-//                          Mail mail = new Mail();
-//                          mail.setSubject("Alert from your bank");
-//                          mail.setTo("mayssendridi21@gmail.com");
-//                          mail.setContent("Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+",\nWe'd like to inform you that your account has not been debited by the amount of "+credit.getAmountRecoveryMonth()+" for "+tranche.getDateLimit()+"\nThe total amount already payed is "+tranche.getRateRecovery()+".\nPlease contact us for more information.");
-//                          emailService.sendSimpleEmail(mail);
-
-// Envoyer un SMS en cas d'echec
-//                     smsService.sendSMS(String.valueOf(50585563),"Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+",\nWe'd like to inform you that your account has not been debited by the amount of "+credit.getAmountRecoveryMonth()+" for "+tranche.getDateLimit()+"\nThe total amount already payed is "+tranche.getRateRecovery()+".\nPlease contact us for more information.");
-//
-
-                    } else {
-                        tranche.setStatus(true);
-                        alreadyPayed += amountTranche;
-                        tranche.setRateRecovery(alreadyPayed);
-
-
-                        accountBalance -= amountTranche;
-
-
-                        System.out.println("Mrs,Mr " + credit.getSurnameClient() + " " + credit.getNameClient() + ",\nWe'd like to inform you that the amount of " + credit.getAmountRecoveryMonth() + " for " + tranche.getDateLimit() + " has been successfully retrieved from your account.\nThe total amount already payed is " + tranche.getRateRecovery() + ".");
-
-//// Envoyer un e-mail en cas de succès
-//
-//                      Mail mail = new Mail();
-//                      mail.setSubject("Information from your bank");
-//                      mail.setTo("mayssendridi21@gmail.com");
-//                      mail.setContent("Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+",\nWe'd like to inform you that the amount of "+credit.getAmountRecoveryMonth()+" for "+tranche.getDateLimit()+" has been successfully retrieved from your account.\nThe total amount already payed is "+tranche.getRateRecovery()+".");
-//                      emailService.sendSimpleEmail(mail);
-//
-//// Envoyer un SMS en cas de succès
-//                     smsService.sendSMS(String.valueOf(50585563),"Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+",\nWe'd like to inform you that the amount of "+credit.getAmountRecoveryMonth()+" for "+tranche.getDateLimit()+" has been successfully retrieved from your account.\nThe total amount already payed is "+tranche.getRateRecovery()+".");
-//
-                    }
-                    trancheRepository.save(tranche);
+                    System.out.println("non confirmé");
                 }
-                currentTrancheIndex++;
-
-
-            }
-            if (currentTrancheIndex == tranches.size() && alreadyPayed == (credit.getAmountRecoveryMonth() * credit.getRecoverySince() * 12)) {
-                credit.setCreditState(true);
-                creditRepository.save(credit);
-                trancheRepository.deleteAll();
             }
         }
     }
 }
-
-
-

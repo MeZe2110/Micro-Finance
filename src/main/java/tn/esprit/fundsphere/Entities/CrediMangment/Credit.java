@@ -20,7 +20,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "credit")
 public class Credit {
@@ -48,8 +47,9 @@ public class Credit {
     @Positive(message = "the recoverySince must be positif")
     int recoverySince ;
 
-
-    boolean creditState =false;
+    @NotBlank(message = "The description cannot be empty.")
+    @Size(min =2 , message = "The description must be at least 2 characters long.")
+    String decision ;
 
     //@Positive(message = "the amountRecoveryMonth must be positif")
     float amountRecoveryMonth ;
