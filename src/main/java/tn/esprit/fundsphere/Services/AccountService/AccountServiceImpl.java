@@ -22,7 +22,9 @@ public class AccountServiceImpl implements IAccountService {
 
 
     @Override
-    public Account addAccount(Account account) {
+    public Account addAccount(Account account, int idUser) {
+        User user = userRepository.findById(idUser).orElse(null);
+        account.setUser(user);
         return accountRepository.save(account);
     }
     @Override

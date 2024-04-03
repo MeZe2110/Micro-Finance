@@ -1,5 +1,6 @@
 package tn.esprit.fundsphere.Services.TransactionService;
 
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class TransactionServiceImpl implements ITransactionService {
 
     @Override
     @Transactional
-    public Transaction addTransaction(Transaction transaction) {
+    public Transaction addTransaction(Transaction transaction) throws MessagingException {
         Optional<Account> optionalSender = accountRepository.findById(transaction.getSender().getIdAccount());
         Account sender = optionalSender.orElseThrow(() -> new IllegalArgumentException("Sender not found"));
 
@@ -50,7 +51,7 @@ public class TransactionServiceImpl implements ITransactionService {
             mail.setTo(sender.getUser().getEmail());
             mail.setSubject("Transaction Failed: Insufficient Funds");
             mail.setContent("Dear " + sender.getUser().getName() + ",\n\nYour transaction of " + transaction.getAmount() + " has been declined due to insufficient funds.");
-            emailService.sendSimpleEmail(mail);
+            emailService.sendHtmlEmail(mail);
 
             throw new IllegalArgumentException("Insufficient funds in sender's account");
         }
@@ -70,7 +71,7 @@ public class TransactionServiceImpl implements ITransactionService {
         successMail.setTo(sender.getUser().getEmail());
         successMail.setSubject("Transaction Successful");
         successMail.setContent("Dear  " + sender.getUser().getName() + ",\n\nYour transaction of " + transaction.getAmount() + " to " + receiver.getUser().getName() + " has been successfully completed.");
-        emailService.sendSimpleEmail(successMail);
+        emailService.sendHtmlEmail(successMail);
 
         return savedTransaction;
     }

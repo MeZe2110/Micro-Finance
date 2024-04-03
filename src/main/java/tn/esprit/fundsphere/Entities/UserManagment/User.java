@@ -1,5 +1,6 @@
 package tn.esprit.fundsphere.Entities.UserManagment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -9,10 +10,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import tn.esprit.fundsphere.Entities.AccountManagment.Account;
 import tn.esprit.fundsphere.Entities.ClaimsManagment.Claims;
 import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
+import tn.esprit.fundsphere.Entities.TrainigManagment.Feedback;
+import tn.esprit.fundsphere.Entities.TrainigManagment.TrainingInscription;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -36,6 +40,14 @@ public class User implements UserDetails {
 
 /*    @OneToMany(mappedBy = "user")
     private List<Claims>claims;*/
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    Set<Feedback> feedbacks;
+
+    @ManyToMany(mappedBy = "users")
+    @JsonIgnore
+    Set<TrainingInscription> trainingInscriptions;
 
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)

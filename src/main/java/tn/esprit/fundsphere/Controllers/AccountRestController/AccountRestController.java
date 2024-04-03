@@ -25,9 +25,9 @@ public class AccountRestController {
         Account account = accountService.getAccountById(accountId);
         return ResponseEntity.ok().body(account);
     }
-    @PostMapping(path = "/add-account")
-    public Account addAccount(@RequestBody Account account) {
-        return accountService.addAccount(account);
+    @PostMapping(path = "/add-account/{idUser}")
+    public Account addAccount(@RequestBody Account account, @PathVariable int idUser) {
+        return accountService.addAccount(account, idUser);
     }
 
     @GetMapping("/show-account")

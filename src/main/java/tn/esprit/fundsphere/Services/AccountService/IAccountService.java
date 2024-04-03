@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IAccountService {
 
-    public Account addAccount(Account account);
+    public Account addAccount(Account account, int idUser);
 
     Account getAccountById(Long accountId);
 

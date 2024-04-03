@@ -1,5 +1,6 @@
 package tn.esprit.fundsphere.Controllers.TransactionRestController;
 
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,7 +32,7 @@ public class TransactionRestController {
     public IAccountService  IAccountService;
 
     @PostMapping(path = "/add-transaction")
-    public Transaction addTransaction(@RequestBody Transaction transaction) {
+    public Transaction addTransaction(@RequestBody Transaction transaction) throws MessagingException {
         return transactionService.addTransaction(transaction);
     }
 
