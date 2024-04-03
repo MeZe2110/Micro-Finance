@@ -10,11 +10,11 @@ import java.util.List;
 public interface ICreditService {
 
     public Credit addCredit(Credit credit);
-    public void deleteCredit(Long idCredit);
-    public String verifCondition(Credit credit,int idCredit);
+    public void deleteCredit(int idCredit);
+    public String verifCondition(int idCredit);
     public Credit updateStateCredit(Credit credit);
     public List<Credit> getAllCredits();
-    public Credit getCredit(Long idCredit);
+    public Credit getCredit(int idCredit);
 //    public void assignCreditToAccount( Long idCredit , Long idAccount);
 //    public void unassignCreditToAccount(Long idCredit);
 }

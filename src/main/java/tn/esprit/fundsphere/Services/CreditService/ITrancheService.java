@@ -11,6 +11,6 @@ public interface ITrancheService {
     public Tranche updateTranche(Tranche tranche);
     public List<Tranche> getAllTranches();
     public Tranche getTranche(Long idTranche);
-    public void assignTranchesToCredit(Long idCredit, Long idTranche);
+    public void assignTranchesToCredit(Long idTranche, int idCredit);
     public void dessignerTrancheToCredit(Long idTranche);
 }

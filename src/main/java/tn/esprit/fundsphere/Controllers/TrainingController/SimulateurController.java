@@ -24,11 +24,6 @@ public class SimulateurController {
         return simulateurService.calculateRemboursementMensuel(simulateur);
     }
 
-    @PostMapping("/financement-sollicite")
-    public int calculateFinancementSollicite(@RequestBody Simulateur simulateur) {
-        return simulateurService.calculateFinancementSollicite(simulateur);
-    }
-
     @PostMapping("/taux-endettement-mensuel")
     public double calculateTauxEndettementMensuel(@RequestBody Simulateur simulateur) {
         return simulateurService.calculateTauxEndettementMensuel(simulateur);

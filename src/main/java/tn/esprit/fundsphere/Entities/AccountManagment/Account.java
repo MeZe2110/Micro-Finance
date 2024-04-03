@@ -36,8 +36,9 @@ public class Account {
     @Enumerated(EnumType.STRING)
     TypeAccount typeA;
 
-   /* @OneToMany(mappedBy = "account")
-    private List<Credit> credits;*/
+   @OneToMany(mappedBy = "account")
+    private List<Credit> credits;
+
     /* @OneToOne(mappedBy = "sender")
     private List<Transaction> transactions;*/
 

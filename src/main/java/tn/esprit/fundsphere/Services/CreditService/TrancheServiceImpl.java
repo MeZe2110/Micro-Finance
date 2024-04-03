@@ -42,7 +42,7 @@ public class TrancheServiceImpl implements ITrancheService {
     private int currentTrancheIndex = 0;
     private float alreadyPayed = 0;
 
-    private float accountBalance = 13000;
+   // private float accountBalance = 13000;
 
     @Override
     public Tranche addTranche(Tranche tranche) {
@@ -78,9 +78,9 @@ public class TrancheServiceImpl implements ITrancheService {
         return trancheRepository.findById(idTranche).get();
     }
 
-    public void assignTranchesToCredit(Long idTranche, Long idCredit) {
+    public void assignTranchesToCredit(Long idTranche, int idCredit) {
         Tranche tranche = trancheRepository.findById(idTranche).get();
-        Credit credit = creditRepository.findById(idCredit).get();
+        Credit credit = creditRepository.findById(idCredit).orElse(null);
 // on set le fils dans le parent :
         tranche.setCredit(credit);
         trancheRepository.save(tranche);
@@ -115,18 +115,17 @@ public class TrancheServiceImpl implements ITrancheService {
 log.info ("tranche Amount" +tranche.getAmount());
 //
                     //
-                    
-log.info ("Tranche credit " +tranche.getCredit());
-log.info ("tranche account "+tranche.getCredit().getAccount());
+
                     // float accountBalance = account.getBalance(); // account.getBalance()
                     // Récupérer l'ID de l'account associé à la tranche
-                   /* Long idAccount = tranche.getCredit().getAccount().getIdAccount();
-log.info("idAccount : " +idAccount);
-                    // Utiliser l'ID pour récupérer l'account correspondant
-                    Account account = accountRepository.findById(idAccount).orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+                    Credit creditTr = creditRepository.findByTranches_IdTranche(tranche.getIdTranche());
+                    log.info ("creditTr " +creditTr.getIdCredit());
+                    Account account = accountRepository.findByCredits_IdCredit(creditTr.getIdCredit());
+                    log.info ("account " +account.getIdAccount());
 
                     // Récupérer le solde de l'account
-                    double accountBalance = account.getBalance();*/
+                    double accountBalance = account.getBalance();
+                    log.info("accountBalance : " +accountBalance);
 
                     if (accountBalance < amountTranche) {
                         tranche.setStatus(false);

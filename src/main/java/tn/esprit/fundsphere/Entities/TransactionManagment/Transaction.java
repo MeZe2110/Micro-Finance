@@ -38,6 +38,5 @@ public class Transaction {
     @JoinColumn(name = "receiver_id", nullable = false)
     private Account receiver;
 
-    private boolean automaticTransaction;
 }
 

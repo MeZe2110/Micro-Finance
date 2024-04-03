@@ -106,8 +106,8 @@ public class AccountServiceImpl implements IAccountService {
         transactionRepository.save(transaction);
     }
 
-    public void assignCreditToAccount( Long idCredit , Long idAccount) {
-        Credit credit = creditRepository.findById(idCredit).get();
+    public void assignCreditToAccount( int idCredit , Long idAccount) {
+        Credit credit = creditRepository.findById(idCredit).orElse(null);
         Account account = accountRepository.findById(idAccount).get();
 // on set le fils dans le parent :
         credit.setAccount(account);
@@ -115,8 +115,8 @@ public class AccountServiceImpl implements IAccountService {
     }
 
 
-    public void unassignCreditToAccount(Long idCredit) {
-        Credit credit = creditRepository.findById(idCredit).get();
+    public void unassignCreditToAccount(int idCredit) {
+        Credit credit = creditRepository.findById(idCredit).orElse(null);
 // on set le fils dans le parent :
         credit.setAccount(null);
         creditRepository.save(credit);

@@ -11,6 +11,7 @@ import tn.esprit.fundsphere.Entities.TrainigManagment.TypeFinencement;
 @RequiredArgsConstructor
 public class ISimulateurServicesImp{
 
+    // f chhar 9adech yraja3
     public double calculateRemboursementMensuel(Simulateur simulateur) {
         double tauxInteretMensuel = calculateTauxInteretMensuel(simulateur);
         int dureeEnMois = simulateur.getDuree();
@@ -18,10 +19,7 @@ public class ISimulateurServicesImp{
         return (montantTotal * tauxInteretMensuel) / (1 - Math.pow(1 + tauxInteretMensuel, -dureeEnMois));
     }
 
-    public int calculateFinancementSollicite(Simulateur simulateur) {
-        return simulateur.getPrixTotal() + simulateur.getAutreFinencement();
-    }
-
+    // % yraja3
     public double calculateTauxEndettementMensuel(Simulateur simulateur) {
         int revenuBrut = simulateur.getRevenuBrut();
         double remboursementMensuel = calculateRemboursementMensuel(simulateur);
@@ -32,9 +30,9 @@ public class ISimulateurServicesImp{
         TypeFinencement typeFinencement = simulateur.getTypeFinencement();
         switch (typeFinencement) {
             case VIP:
-                return 0.001;
+                return 0.1;
             case NORMAL:
-                return 0.0013;
+                return 0.14;
             default:
                 throw new IllegalArgumentException("Unknown financing type");
         }

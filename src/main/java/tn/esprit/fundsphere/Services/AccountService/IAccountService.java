@@ -18,8 +18,8 @@ public interface IAccountService {
     public Account getaccount(Long idAccount);
     public void assignAccountTotransactionReceiver( Long idAccount , Long idTransaction ) ;
     public void unassignAccountToTransactionReceiver(Long idTransaction);
-    public void assignCreditToAccount( Long idCredit , Long idAccount);
-    public void unassignCreditToAccount(Long idCredit);
+    public void assignCreditToAccount( int idCredit , Long idAccount);
+    public void unassignCreditToAccount(int idCredit);
 
 
 

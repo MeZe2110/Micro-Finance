@@ -11,4 +11,7 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 
     List<Account> findByAutomaticTransaction(boolean automaticTransaction);
 
+    Account findByCredits_IdCredit(int idCredit);
+
+
 }

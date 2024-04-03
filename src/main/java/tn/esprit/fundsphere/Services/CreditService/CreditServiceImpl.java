@@ -38,17 +38,16 @@ public class CreditServiceImpl implements ICreditService{
     }
 
     @Override
-    public void deleteCredit(Long idCredit) {
+    public void deleteCredit(int idCredit) {
          creditRepository.deleteById(idCredit);
 
     }
 
     @Override
-    public String verifCondition(Credit credit,int idCredit) {
-        idCredit=credit.getIdCredit();
-        credit=creditRepository.getById((long) idCredit);
+    public String verifCondition(int idCredit) {
+        Credit credit = creditRepository.getById(idCredit);
         float recoveryTemp;
-        recoveryTemp = (float) ((credit.getCreditAmount() * credit.getInterestRate()) / (1 - (Math.pow((1 + credit.getInterestRate()), (-credit.getRecoverySince()))))) / 12;;
+        recoveryTemp = (float) ((credit.getCreditAmount() * credit.getInterestRate()) / (1 - (Math.pow((1 + credit.getInterestRate()), (-credit.getRecoverySince()))))) / 12;
         float Salary = credit.getSalary();
         if (recoveryTemp <= Salary * 0.4)
         {
@@ -61,6 +60,7 @@ public class CreditServiceImpl implements ICreditService{
     }
     @Override
     public Credit updateStateCredit(Credit credit) {
+
         if (credit.getState() == 1)
         {
             
@@ -137,7 +137,7 @@ public class CreditServiceImpl implements ICreditService{
         return creditRepository.findAll();    }
 
     @Override
-    public Credit getCredit(Long idCredit) {
+    public Credit getCredit(int idCredit) {
         return creditRepository.findById(idCredit).get();
     }
 

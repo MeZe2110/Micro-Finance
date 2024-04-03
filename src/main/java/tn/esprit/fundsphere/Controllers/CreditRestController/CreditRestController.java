@@ -52,13 +52,8 @@ public class CreditRestController {
         creditService.deleteCredit(idCredit);
     }*/
   @DeleteMapping(path = "/delete-credit/{id}")
-  public ResponseEntity<Void> deleteCredit(@PathVariable("id") @Positive Long idCredit) {
-      if (idCredit == null) {
-          return ResponseEntity.badRequest().build();
-      }
-
+  public void deleteCredit(@PathVariable("id") @Positive int idCredit) {
       creditService.deleteCredit(idCredit);
-      return ResponseEntity.ok().build();
   }
 
    /* @PutMapping(path = "/update-credit")
@@ -70,8 +65,8 @@ public class CreditRestController {
     }*/
 
     @GetMapping(path= "/verifCondition/{idCredit}")
-    public String verifCondition(Credit credit,@PathVariable int idCredit){
-        return creditService.verifCondition(credit,idCredit);
+    public String verifCondition(@PathVariable int idCredit){
+        return creditService.verifCondition(idCredit);
     }
 
 
@@ -88,7 +83,7 @@ public class CreditRestController {
 
     @PutMapping("/affecter-tranche-a-credit/{tranche-id}/{idCredit}")
     public void assignTranchesToCredit(@PathVariable("tranche-id") Long idTranche,
-                                      @PathVariable("idCredit") Long idCredit) {
+                                      @PathVariable("idCredit") int idCredit) {
         trancheService.assignTranchesToCredit(idTranche, idCredit);
     }
 
@@ -97,13 +92,13 @@ public class CreditRestController {
         trancheService.dessignerTrancheToCredit(idTranche );
     }
     @PutMapping("/affecter-credit-a-account/{credit-id}/{idAccount}")
-    public void assignCreditToAccount(@PathVariable("credit-id") Long idCredit,
+    public void assignCreditToAccount(@PathVariable("credit-id") int idCredit,
                                       @PathVariable("idAccount") Long idAccount) {
         accountService.assignCreditToAccount(idCredit, idAccount);
     }
 
     @PutMapping("/desaffecgter-credit-a-account/{credit-id}") //client-only/
-    public void assignCreditToAccount(@PathVariable("credit-id") Long idCredit) {
+    public void assignCreditToAccount(@PathVariable("credit-id") int idCredit) {
         accountService.unassignCreditToAccount(idCredit );
     }
 }
