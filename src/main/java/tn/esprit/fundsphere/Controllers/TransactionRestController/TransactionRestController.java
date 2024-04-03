@@ -23,6 +23,7 @@ import java.util.Map;
 @RequestMapping("/transaction")
 public class TransactionRestController {
 
+    //injection de dependence
     @Autowired
     private final ITransactionService transactionService;
     @Autowired
@@ -55,9 +56,9 @@ public class TransactionRestController {
     public void deleteTransaction(@PathVariable("id") Long idTransaction) {
         transactionService.deleteTransaction(idTransaction);
     }
-    @PostMapping("/automatic-transfer")
+    @PostMapping("/automatic-transfer")//methode de post
     public String setAutomaticTransaction(
-            @RequestParam Long senderId,
+            @RequestParam Long senderId,//request chnowa nest7a9ou
             @RequestParam Long receiverId,
             @RequestParam double amount
     ) {

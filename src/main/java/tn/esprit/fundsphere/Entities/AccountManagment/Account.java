@@ -25,7 +25,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     Long idAccount;
-    //@NotBlank(message = "Le numAccount ne doit pas etre vide")
+   // @NotBlank(message = "Le numAccount ne doit pas etre vide")
     Long numAccount;
 
     Double balance;

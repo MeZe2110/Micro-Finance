@@ -139,7 +139,10 @@ public class TransactionServiceImpl implements ITransactionService {
         }
     }
     @Override
+    //mouch boucle infini
     @Transactional
+
+    //verssement
     public void addMoney(Account account, double amount) {
         account.setBalance(account.getBalance() + amount);
         accountRepository.save(account);
@@ -158,23 +161,6 @@ public class TransactionServiceImpl implements ITransactionService {
             return false;
         }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -209,7 +195,7 @@ public Map<String, Double> calculateStatistics(Long accountId) {
     @Override
     public Map<String, Double> calculateAutomaticTransferStatistics() {
         Map<String, Double> statistics = new HashMap<>();
-
+//relation entre les valeurs
         List<AutomaticTransfer> automaticTransfers = automaticTransferRepository.findAll();
         double totalAmountTransferred = 0;
         int successfulTransfers = 0;
