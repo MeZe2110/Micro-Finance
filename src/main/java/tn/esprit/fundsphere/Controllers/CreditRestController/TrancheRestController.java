@@ -43,6 +43,13 @@ public class TrancheRestController {
         return tranches;
     }
 
+<<<<<<< HEAD
+=======
+    @GetMapping("/verif-tranche")
+    public void verifyTrancheAmountInAccount() {
+        trancheService.verifyTrancheAmountInAccount();
+    }
+>>>>>>> 9ab4a29 (fonctions avancées étape 2)
 
 }
 
