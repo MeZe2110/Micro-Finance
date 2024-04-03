@@ -29,7 +29,7 @@ public class Investment {
     Invest_stage stage;
     String description ;
     Date date_debut;
-
+    Float income_by_month;
     @Enumerated(EnumType.STRING)
     InvestStatus status;
 
@@ -37,5 +37,5 @@ public class Investment {
     @JsonIgnore
     @OneToMany(mappedBy = "investment")
     private List<Transaction> transactions;
-
+// Lezemni nzid el fetch
 }

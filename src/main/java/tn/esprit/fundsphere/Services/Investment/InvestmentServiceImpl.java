@@ -9,10 +9,13 @@ import tn.esprit.fundsphere.Entities.InvestmentManagment.InvestStatus;
 import tn.esprit.fundsphere.Entities.InvestmentManagment.Invest_stage;
 import tn.esprit.fundsphere.Entities.InvestmentManagment.Investment;
 import tn.esprit.fundsphere.Entities.TransactionManagment.Transaction;
+import tn.esprit.fundsphere.Entities.TransactionManagment.TypeTransaction;
 import tn.esprit.fundsphere.Repositories.AccountRepository.AccountRepository;
 import tn.esprit.fundsphere.Repositories.IInvestmentRepository;
+import tn.esprit.fundsphere.Repositories.TransactionRepository.TransactionRepository;
 import tn.esprit.fundsphere.Services.TransactionService.ITransactionService;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +25,7 @@ import java.util.List;
 public class InvestmentServiceImpl implements InvestmentService{
     private IInvestmentRepository investmentRepository;
     private AccountRepository accountRepository;
+    private TransactionRepository transactionRepository;
     @Autowired
     private ITransactionService iTransactionService;
     @Override
@@ -54,7 +58,7 @@ public List<Investment> ShowAllInvestment(){
         return investmentRepository.findAll();
 }
 
-//l owner of the project
+// For the project owner to create an investment
 @Override
     public Investment CreateInvestment(Long owneraccount_id, Investment investment){
         investment.setAmountInv(0f);
@@ -64,12 +68,14 @@ public List<Investment> ShowAllInvestment(){
 
         return investmentRepository.save(investment);
     }
+    // In order to accept an Investment ( change statut to accepted)
     @Override
     public Investment AcceptInvestment(Integer invest_id){
         Investment investment=investmentRepository.findById(invest_id).orElse(null);
         investment.setStatus(InvestStatus.ACCEPTED);
         return investmentRepository.save(investment);
     }
+    // In order to Refuse an Investment ( change statu to Refused)
     @Override
     public Investment RefuseInvestment(Integer invest_id){
         Investment investment=investmentRepository.findById(invest_id).orElse(null);
@@ -77,14 +83,14 @@ public List<Investment> ShowAllInvestment(){
         return investmentRepository.save(investment);
     }
     //schedule
-// Start the project
+// In Order to start a projet ( change stage to INPROGRESS)
     @Scheduled(fixedDelay = 86400000)
     @Override
     public void DisplayInvestment(){
         List<Investment> investments=investmentRepository.findByStageAndStatus(Invest_stage.NOT_STARTED,InvestStatus.ACCEPTED);
 
         for (Investment inv:investments){
-            if (inv.getDate_debut().after(new Date())){
+            if (inv.getDate_debut().before(new Date())){
                 inv.setStage(Invest_stage.INPROGESS);
                 investmentRepository.save(inv);
             }
@@ -92,7 +98,7 @@ public List<Investment> ShowAllInvestment(){
 
 
     }
-// for the investor
+// For the investor to invest
     @Override
 public Investment Invest(Long account_id, Float amount_invested, Integer investment_id){
 Investment investment=investmentRepository.findById(investment_id).orElse(null);
@@ -100,6 +106,9 @@ if(investment.getAmountInv()+amount_invested> investment.getMaxamount()){
     throw new IllegalArgumentException("The amount that you give is higher than we ask , please try with less one");
 
 }
+        if(investment.getAmountInv()+amount_invested== investment.getMaxamount()){
+investment.setStage(Invest_stage.COMPLETED);
+        }
 
     Account account_sender=accountRepository.findById(account_id).orElse(null);
 
@@ -113,15 +122,67 @@ investment.setAmountInv(investment.getAmountInv()+amount_invested);
     transaction1.setSender(account_sender);
     transaction1.setReceiver(account_admin);
     transaction1.setInvestment(investment);
+    transaction1.setTypeT(TypeTransaction.INCOME);
+    transaction1.setDate(LocalDate.now());
     transaction1=iTransactionService.addTransaction(transaction1);
     Transaction transaction2=new Transaction();
     transaction2.setAmount(inv_amount);
     transaction2.setSender(account_sender);
     transaction2.setReceiver(account_receiver);
+    transaction2.setTypeT(TypeTransaction.RETURN_INVESTMENT);
     transaction2.setInvestment(investment);
+    transaction2.setDate(LocalDate.now());
     transaction2=iTransactionService.addTransaction(transaction2);
 
 return investmentRepository.save(investment);
     }
+    public void ReturnInvestment(Transaction transaction){
+        Investment investment=transaction.getInvestment();
+        Float project_income=investment.getIncome_by_month()/2;
+        Float amount_inv_by_investor=transaction.getAmount();
+        Float amount_invested=investment.getAmountInv();
+        Float returnInvestment=(amount_inv_by_investor/amount_invested)*project_income;
+       Transaction transaction_bank_income=new Transaction();
+       Transaction transaction_investor_income=new Transaction();
+       transaction_investor_income.setAmount(returnInvestment*0.95f);
+       transaction_investor_income.setSender(transaction.getReceiver());
+       transaction_investor_income.setReceiver(transaction.getSender());
+       transaction_investor_income.setDate(LocalDate.now());
+       transaction_investor_income.setTypeT(TypeTransaction.INVESTMENT);
+       transaction_bank_income.setAmount(returnInvestment*0.1f);
+       transaction_bank_income.setSender(transaction.getReceiver());
+       transaction_bank_income.setReceiver(accountRepository.findById(1L).orElse(null));
+       transaction_bank_income.setTypeT(TypeTransaction.INCOME);
+       iTransactionService.addTransaction(transaction_bank_income);
+       iTransactionService.addTransaction(transaction_investor_income);
+
+
+    }
+
+    @Override
+    public void Checkinvest(){
+        List<Investment> investments=investmentRepository.findByStatus(InvestStatus.ACCEPTED);
+        for(Investment investment:investments){
+
+            List<Transaction> transactions=investment.getTransactions();
+              for (Transaction transaction:transactions){
+                  if (transaction.getTypeT()==TypeTransaction.INVESTMENT){
+                      LocalDate date=transaction.getDate().plusMonths(1);
+
+                      if (LocalDate.now().isAfter(date)){
+                          transaction.setDate(date);
+                          transactionRepository.save(transaction);
+                          ReturnInvestment(transaction);
+
+
+                      }
+
+                  }
+              }
+
+
+        }
+    }
+
 
 }

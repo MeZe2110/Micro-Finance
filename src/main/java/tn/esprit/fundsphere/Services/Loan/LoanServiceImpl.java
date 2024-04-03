@@ -13,6 +13,7 @@ import tn.esprit.fundsphere.Repositories.ILoanRepository;
 import tn.esprit.fundsphere.Services.TransactionService.ITransactionService;
 import tn.esprit.fundsphere.Services.TransactionService.TransactionServiceImpl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -71,12 +72,12 @@ public class LoanServiceImpl implements LoanService {
             score_periode = 0.4f;
 
         } else {
-            score_periode = (investmentPeriodInMonths / 48) * 0.5f;
+            score_periode = (investmentPeriodInMonths / 48) * 0.4f;
         }
         if (amount >= 50000) {
             score_amount = 0.6f;
         } else {
-            score_amount = (amount / 50000) * 0.5f;
+            score_amount = (amount / 50000) * 0.6f;
         }
         Float score = score_amount + score_periode;
         if (score<0.3){
@@ -88,14 +89,10 @@ public class LoanServiceImpl implements LoanService {
         loan.setStatus(false);
 
 
-        List<Loan> loans=account.getLoans();
-        if (loans==null){
-            loans=new ArrayList<>();
-        }
+
        List<Transaction> transactions =loan.getTransactions();
-        loans.add(loan);
-        account.setLoans(loans);
-        loan.setAccount(account);
+
+        loan.setAccount_id(account_id);
         Transaction transaction1=new Transaction();
         transaction1.setSender(account);
         transaction1.setReceiver(accountRepository.findById(1L).orElse(null));
@@ -106,9 +103,10 @@ public class LoanServiceImpl implements LoanService {
             transactions=new ArrayList<>();
         }
         transactions.add(transaction1);
+        loanRepository.save(loan);
         transaction1=iTransactionService.addTransaction(transaction1);
-      //  loanRepository.save(loan);
-      //  accountRepository.save(account);
+
+
 
         return loan;
     }
@@ -122,11 +120,18 @@ public class LoanServiceImpl implements LoanService {
         Date date = new Date();
         List<Loan> loans = loanRepository.findByDateFinBefore(date);
         for (Loan loan : loans) {
-
+if (!loan.isStatus()){
             loan.setStatus(true);
             loanRepository.save(loan);
+            Transaction transaction1=new Transaction();
+            transaction1.setAmount(loan.getAmount()+loan.getInterest());
+            transaction1.setSender(accountRepository.findById(1L).orElse(null));
+            transaction1.setReceiver(accountRepository.findById(loan.getAccount_id()).orElse(null));
+            transaction1.setDate(LocalDate.now());
+            transaction1.setTypeT(TypeTransaction.RETURN_LOAN);
+            iTransactionService.addTransaction(transaction1);
 
-        }
+        }}
     }
 }
 

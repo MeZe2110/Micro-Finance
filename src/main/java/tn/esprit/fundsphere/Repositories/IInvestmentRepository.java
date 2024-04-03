@@ -11,4 +11,5 @@ import java.util.List;
 public interface IInvestmentRepository extends JpaRepository<Investment,Integer> {
   //  @Query("SELECT i FROM Investment i WHERE i.stage =:stage AND i.status =:status")
     List<Investment> findByStageAndStatus(Invest_stage stage,InvestStatus status);
+    List<Investment> findByStatus(InvestStatus status);
 }

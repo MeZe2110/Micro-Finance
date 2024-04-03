@@ -32,13 +32,12 @@ public class Loan {
      Float interest;
      Float score;
      boolean status;
-     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
-     Account account;
+
+     Long account_id;
 
 
    @OneToMany(mappedBy = "loan")
     List<Transaction> transactions;
+   // Lezemni nzid el fetch kol manalka onetomany
 
 }

@@ -27,4 +27,6 @@ public interface InvestmentService {
     void DisplayInvestment();
 
     Investment Invest(Long account_id, Float amount_invested, Integer investment_id);
+
+    void Checkinvest();
 }

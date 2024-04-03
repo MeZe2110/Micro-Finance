@@ -2,8 +2,12 @@ package tn.esprit.fundsphere.Controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.fundsphere.Entities.AccountManagment.Account;
 import tn.esprit.fundsphere.Entities.InvestmentManagment.Investment;
+import tn.esprit.fundsphere.Entities.TransactionManagment.Transaction;
+import tn.esprit.fundsphere.Entities.TransactionManagment.TypeTransaction;
 import tn.esprit.fundsphere.Services.Investment.InvestmentService;
+import tn.esprit.fundsphere.Services.TransactionService.ITransactionService;
 
 import java.util.List;
 @RestController
@@ -12,6 +16,7 @@ import java.util.List;
 
 public class InvestmentRestController {
     public InvestmentService investmentService;
+    public ITransactionService iTransactionService;
     @PostMapping("/add")
     Investment AddInvestisement(@RequestBody Investment investment){
         return investmentService.AddInvestment(investment);
@@ -37,6 +42,11 @@ public class InvestmentRestController {
         return investmentService.UpdateAmount(id,amount);
 
     }
+    @PostMapping("/Create/{id}")
+    Investment CreateInvestment(@PathVariable("id") Long account_id,@RequestBody Investment investment){
+        return investmentService.CreateInvestment(account_id,investment);
+
+    }
     @PutMapping("/display")
     void Displayinvest(){
          investmentService.DisplayInvestment();
@@ -56,5 +66,8 @@ public class InvestmentRestController {
         return investmentService.RefuseInvestment(id);
     }
 
-
+ @PutMapping("/check")
+    void CheckInvestment(){
+        investmentService.Checkinvest();
+ }
 }
