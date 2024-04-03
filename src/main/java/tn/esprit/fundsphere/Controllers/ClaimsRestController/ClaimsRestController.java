@@ -15,7 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/claims")
-public class ClaimsRestController {
+public class
+
+ClaimsRestController {
 
 
     public ClaimsServiceImlp claimsService ;

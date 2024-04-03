@@ -6,5 +6,5 @@ import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
 import java.util.List;
 
 public interface CreditRepository extends JpaRepository<Credit,Long> {
-    List<Credit> findByState(int state);
+    List<Credit> findByState(int i);
 }
