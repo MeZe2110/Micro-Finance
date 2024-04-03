@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -44,6 +45,9 @@ public class PDFGenerator {
 //ouvrir document
         document.open();
 
+
+
+
         Font fontTiltle = FontFactory.getFont(FontFactory.TIMES_ROMAN);
         fontTiltle.setSize(20);
 
@@ -53,23 +57,50 @@ public class PDFGenerator {
 
 
         Font font2 = new Font();
-        // font2.setColor(Color.GREEN);
-        Paragraph paragraph0 = new Paragraph("CHECKING Account");
-        paragraph0.setAlignment(Paragraph.ALIGN_RIGHT);
-        document.add(paragraph0);
-        Paragraph paragraph5 = new Paragraph("Page : 1 of 1",font2);
-        paragraph5.setAlignment(Paragraph.ALIGN_RIGHT);
-        document.add(paragraph5);
+        Font font3 = new Font();
+        Font font4 = new Font();
+        Font font5 = new Font();
 
-        Paragraph paragraph2 = new Paragraph("Date :"+formattedDate);
+        font2.setColor(BaseColor.BLUE);
+        font3.setColor(BaseColor.BLUE);
+        font4.setColor(BaseColor.RED);
+        font5.setColor(BaseColor.GREEN);
+
+
+
+
+        String imagePath = "/C://image//fundspheres.png/";
+
+        Image logo = Image.getInstance(imagePath);
+        logo.scaleAbsolute(100, 100); // Définir la taille de l'image
+        logo.setAbsolutePosition(450, PageSize.A4.getHeight() - 100); // Positionner l'image
+
+        document.add(logo);
+
+
+        Paragraph paragraph0 = new Paragraph("CHECKING Account" , font3);
+        paragraph0.setAlignment(Paragraph.ALIGN_LEFT);
+       //    paragraph0.setSpacingBefore(50);
+        document.add(paragraph0);
+
+        Paragraph paragraph2 = new Paragraph("Date :"+formattedDate , font5);
         paragraph2.setAlignment(Paragraph.ALIGN_LEFT);
+        // paragraph2.setSpacingBefore(10);
         document.add(paragraph2);
-        Paragraph paragraph3 = new Paragraph("fundsphere ");
-        paragraph3.setAlignment(Paragraph.ALIGN_LEFT);
-        document.add(paragraph3);
-        Paragraph paragraph1 = new Paragraph("liste des comptes", fontTiltle);
+
+
+
+
+
+        Paragraph paragraph1 = new Paragraph("les information de compte",  fontTiltle);
         paragraph1.setAlignment(Paragraph.ALIGN_CENTER);
+        paragraph1.setSpacingAfter(20);
         document.add(paragraph1);
+
+
+
+
+
 
         for (Account account: accountList) {
             document.add(new Paragraph("l'dentifiant du compte : " + account.getIdAccount()));
@@ -77,13 +108,21 @@ public class PDFGenerator {
             document.add(new Paragraph("le balance est  : " + account.getBalance()));
             document.add(new Paragraph("la date de creation est   : " + account.getDate()));
             document.add(new Paragraph("le rib est  : " + account.getRib()));
-            document.add(new Paragraph("le utilisateur est   : " + account.getUser()));
+          //  document.add(new Paragraph("le utilisateur est   : " + account.getUser()));
 
 
 
                 // e.printStackTrace();
 
         }
+
+        Paragraph paragraph5 = new Paragraph("Page : 1 of 1",font2);
+        paragraph5.setAlignment(Paragraph.ALIGN_CENTER);
+        paragraph5.setSpacingBefore(500);
+        document.add(paragraph5);
+
+
+
         document.close();
 
 

@@ -79,7 +79,7 @@ public class AccountRestController {
         authenticationService.unassignUserToAccount(idAccount);
     }
 
-
+/////////////pdf/////////////////////
     @GetMapping("/client/account/export-to-pdf/{id}")
     public void generatePdfFile(HttpServletResponse response , @PathVariable Long id) throws DocumentException, IOException, com.itextpdf.text.DocumentException {
         response.setContentType("application/pdf");
@@ -88,9 +88,9 @@ public class AccountRestController {
         String headerkey = "Content-Disposition";
         String headervalue = "attachment; filename=FinancialStudy" + currentDateTime + ".pdf";
         response.setHeader(headerkey, headervalue);
-        List < Account > financialStudyList = Collections.singletonList(accountService.getaccount(id));
+        List < Account > AccountList = Collections.singletonList(accountService.getaccount(id));
         PDFGenerator generator = new PDFGenerator();
-        generator.generate(financialStudyList, response );
+        generator.generate(AccountList, response );
     }
 
 
