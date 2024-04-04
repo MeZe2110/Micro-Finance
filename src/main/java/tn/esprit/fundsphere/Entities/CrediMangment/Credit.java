@@ -20,6 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "credit")
 public class Credit {

@@ -17,7 +17,6 @@ import tn.esprit.fundsphere.Repositories.AccountRepository.AccountRepository;
 import tn.esprit.fundsphere.Repositories.CreditRepository.CreditRepository;
 import tn.esprit.fundsphere.Repositories.CreditRepository.TrancheRepository;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -97,30 +96,37 @@ public class TrancheServiceImpl implements ITrancheService {
 
 
     //@Scheduled(cron = "0 0 0 1 * ?") // Exécuter le 1er jour de chaque mois à minuit
-   // @Scheduled(fixedDelay = 120000)
+    @Scheduled(fixedDelay = 60000)
     public void verifyTrancheAmountInAccount() throws ChangeSetPersister.NotFoundException {
         List<Credit> credits = creditRepository.findByState(1);
+        log.info("nbre de credit" + credits.size());
+
         for (Credit credit : credits) {
             List<Tranche> tranches = trancheRepository.findByCredit(credit);
+            log.info("nbre de credit" + tranches.size());
 
             if (credit.getState() == 1) {
-
+                log.info("state 1");
                 if (currentTrancheIndex < tranches.size()) {
+                    log.info("tranche ");
                     Tranche tranche = tranches.get(currentTrancheIndex);
 
                     float amountTranche = tranche.getAmount();
-
+log.info ("tranche Amount" +tranche.getAmount());
+//
+                    //
+                    
+log.info ("Tranche credit " +tranche.getCredit());
+log.info ("tranche account "+tranche.getCredit().getAccount());
                     // float accountBalance = account.getBalance(); // account.getBalance()
-
                     // Récupérer l'ID de l'account associé à la tranche
-                    Long idAccount = tranche.getCredit().getAccount().getIdAccount();
-
+                   /* Long idAccount = tranche.getCredit().getAccount().getIdAccount();
+log.info("idAccount : " +idAccount);
                     // Utiliser l'ID pour récupérer l'account correspondant
-                    Account account = accountRepository.findById(idAccount)
-                            .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+                    Account account = accountRepository.findById(idAccount).orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 
                     // Récupérer le solde de l'account
-                    double accountBalance = account.getBalance();
+                    double accountBalance = account.getBalance();*/
 
                     if (accountBalance < amountTranche) {
                         tranche.setStatus(false);
@@ -139,6 +145,7 @@ public class TrancheServiceImpl implements ITrancheService {
 // Envoyer un SMS en cas d'echec
 //                     smsService.sendSMS(String.valueOf(50585563),"Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+",\nWe'd like to inform you that your account has not been debited by the amount of "+credit.getAmountRecoveryMonth()+" for "+tranche.getDateLimit()+"\nThe total amount already payed is "+tranche.getRateRecovery()+".\nPlease contact us for more information.");
 //
+
                     } else {
                         tranche.setStatus(true);
                         alreadyPayed += amountTranche;
@@ -165,6 +172,7 @@ public class TrancheServiceImpl implements ITrancheService {
                     trancheRepository.save(tranche);
                 }
                 currentTrancheIndex++;
+
 
             }
             if (currentTrancheIndex == tranches.size() && alreadyPayed == (credit.getAmountRecoveryMonth() * credit.getRecoverySince() * 12)) {

@@ -29,7 +29,7 @@ public class CreditServiceImpl implements ICreditService{
     private CreditRepository creditRepository;
     private TrancheRepository trancheRepository;
     private final EmailService emailService;
-   // private final SMSService smsService;
+  //  private final SMSService smsService;
     private AccountRepository accountRepository ;
 
     @Override
@@ -123,7 +123,8 @@ public class CreditServiceImpl implements ICreditService{
                                     .concat(" "+credit.getNameClient())
                                     .concat("\"we inform you that your credit application has been Declined.\n\r "))));
 
-       */ }else
+     */
+        }else
         {
             creditRepository.save(credit);
 

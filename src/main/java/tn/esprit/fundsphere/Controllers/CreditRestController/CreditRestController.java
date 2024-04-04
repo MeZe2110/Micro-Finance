@@ -71,9 +71,7 @@ public class CreditRestController {
 
     @GetMapping(path= "/verifCondition/{idCredit}")
     public String verifCondition(Credit credit,@PathVariable int idCredit){
-       // return creditService.verifCondition(credit,idCredit);
-        return creditService.verifCondition(credit , idCredit);
-
+        return creditService.verifCondition(credit,idCredit);
     }
 
 

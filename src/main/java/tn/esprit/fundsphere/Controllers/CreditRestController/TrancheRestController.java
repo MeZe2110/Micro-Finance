@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import tn.esprit.fundsphere.Entities.ClaimsManagment.Claims;
 import tn.esprit.fundsphere.Entities.CrediMangment.Tranche;
 import tn.esprit.fundsphere.Entities.TransactionManagment.Transaction;
+import tn.esprit.fundsphere.Repositories.CreditRepository.TrancheRepository;
 import tn.esprit.fundsphere.Services.CreditService.TrancheServiceImpl;
+import tn.esprit.fundsphere.Services.EXCEL.ExcelGenerator;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,6 +22,8 @@ import java.util.List;
 public class TrancheRestController {
 
     public TrancheServiceImpl trancheService;
+    public TrancheRepository trancheRepository;
+    public ExcelGenerator excelGenerator;
 
     @PostMapping(path = "/add-tranche")
     public Tranche addTranche(@RequestBody Tranche claims) {
@@ -54,6 +59,25 @@ public class TrancheRestController {
     public void verifyTrancheAmountInAccount() throws ChangeSetPersister.NotFoundException {
         trancheService.verifyTrancheAmountInAccount();
     }
+
+    @GetMapping("/genererTranchesExcel/{idCredit}")
+    public String genererTranchesExcel(@PathVariable("idCredit") int idCredit) {
+        try {
+            List<Tranche> tranches = trancheRepository.findByCreditIdCredit(idCredit);
+            if (tranches.isEmpty()) {
+                return "Aucune tranche trouvée pour ce crédit";
+            }
+
+            String filePath = "TranchesCredit_" + idCredit + ".xlsx";
+           // ExcelGenerator.generateExcel(tranches, filePath);
+            excelGenerator.generateExcel(tranches, filePath);
+            return "Fichier Excel des tranches généré avec succès";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Erreur lors de la génération du fichier Excel";
+        }
+    }
+
 
 }
 

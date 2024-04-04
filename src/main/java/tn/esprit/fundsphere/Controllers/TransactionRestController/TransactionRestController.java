@@ -1,5 +1,6 @@
 package tn.esprit.fundsphere.Controllers.TransactionRestController;
 
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,6 +11,7 @@ import tn.esprit.fundsphere.Entities.AccountManagment.Account;
 import tn.esprit.fundsphere.Entities.TransactionManagment.Transaction;
 import tn.esprit.fundsphere.Repositories.AccountRepository.AccountRepository;
 import tn.esprit.fundsphere.Services.AccountService.AccountServiceImpl;
+import tn.esprit.fundsphere.Services.AccountService.IAccountService;
 import tn.esprit.fundsphere.Services.TransactionService.ITransactionService;
 
 import java.time.LocalDate;
@@ -27,9 +29,10 @@ public class TransactionRestController {
     private AccountRepository accountRepository;
     @Autowired
     public AccountServiceImpl accountService;
+    public IAccountService  IAccountService;
 
     @PostMapping(path = "/add-transaction")
-    public Transaction addTransaction(@RequestBody Transaction transaction) {
+    public Transaction addTransaction(@RequestBody Transaction transaction) throws MessagingException {
         return transactionService.addTransaction(transaction);
     }
 
@@ -66,14 +69,14 @@ public class TransactionRestController {
         return "Automatic transaction set up successfully!";
     }
     @PostMapping("/versement")
-    public ResponseEntity<String> addMoneyToAccount(@RequestParam Long accountId, @RequestParam double amount) {
+    public ResponseEntity<String> addMoneyToAccount(@RequestParam Long idAccount, @RequestParam double amount) {
         try {
-            Account account = accountService.getAccountById(accountId);
+            Account account = accountService.getAccountById(idAccount);
             if (account == null) {
                 return ResponseEntity.badRequest().body("Account not found");
             }
             transactionService.addMoney(account, amount);
-            return ResponseEntity.ok("versement successfully " + accountId);
+            return ResponseEntity.ok("versement successfully " + idAccount);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error versement: " + e.getMessage());
@@ -123,4 +126,35 @@ public class TransactionRestController {
 
         return new ResponseEntity<>(statistics, HttpStatus.OK);
     }
+
+
+
+    //afectation
+
+
+    @PutMapping("/affecter-Account-a-receiver/{idAccount}/{idTransaction}")
+    public void assignAccountTotransactionReceiver(@PathVariable("idAccount") Long idAccount,
+                                    @PathVariable("idTransaction") Long idTransaction) {
+        IAccountService.assignAccountTotransactionReceiver(idTransaction, idAccount);
+    }
+
+    @PutMapping("/desaffecter-Account-a-receiver/{idTransaction}")
+    public void unassignAccountToTransactionReceiver(@PathVariable("idTransaction") Long idTransaction) {
+        IAccountService.unassignAccountToTransactionReceiver(idTransaction);
+    }
+
+
+
+    @PutMapping("/affecter-Account-a-Sender/{idAccount}/{idTransaction}")
+    public void assignAccountToTransactionSender(@PathVariable("idAccount") Long idAccount,
+                                           @PathVariable("idTransaction") Long idTransaction) {
+        IAccountService.assignAccountTotransactionSender(idTransaction, idAccount);
+    }
+
+    @PutMapping("/desaffecter-Account-a-Sender/{idTransaction}")
+    public void unassignAccountToTransactionSender(@PathVariable("idTransaction") Long idTransaction) {
+        IAccountService.unassignAccountToTransactionSender(idTransaction);
+    }
+
+
 }
