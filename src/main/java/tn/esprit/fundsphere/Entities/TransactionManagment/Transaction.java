@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import tn.esprit.fundsphere.Entities.AccountManagment.Account;
+import tn.esprit.fundsphere.Entities.InvestmentManagment.Investment;
+import tn.esprit.fundsphere.Entities.LoanManagment.Loan;
 
 import java.time.LocalDate;
 
@@ -37,6 +39,10 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "receiver_id", nullable = false)
     private Account receiver;
+    @ManyToOne
+    private Loan loan;
+    @ManyToOne
+    private Investment investment;
 
 }
 

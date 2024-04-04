@@ -92,12 +92,12 @@ public class CreditServiceImpl implements ICreditService{
             System.out.println("Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+" , we inform you that your credit application has been Accepted. Your interest rate is "+ credit.getInterestRate()+" and your recovery per month is "+credit.getAmountRecoveryMonth()+" and you will return your credit on "+credit.getRecoverySince()+" years");
 
 
-            // Mail mail = new Mail();
+            Mail mail = new Mail();
 
-            // mail.setSubject("Credit application decision");
-            // mail.setTo("mayssendridi21@gmail.com");
-            // mail.setContent("Mrs,Mr"+credit.getSurnameClient()+" "+credit.getNameClient()+" , we inform you that your credit application has been Accepted. Your interest rate is "+ credit.getInterestRate()+" and your recovery per month is "+credit.getAmountRecoveryMonth()+" and you will return your credit on "+credit.getRecoverySince()+" years");
-            // emailService.sendSimpleEmail(mail);
+             mail.setSubject("Credit application decision");
+             mail.setTo("mayssendridi21@gmail.com");
+             mail.setContent("Mrs,Mr"+credit.getSurnameClient()+" "+credit.getNameClient()+" , we inform you that your credit application has been Accepted. Your interest rate is "+ credit.getInterestRate()+" and your recovery per month is "+credit.getAmountRecoveryMonth()+" and you will return your credit on "+credit.getRecoverySince()+" years");
+             emailService.sendSimpleEmail(mail);
 
             // smsService.sendSMS(String.valueOf(50585563),"Welcome to FundSphere \n\r"
             //      .concat("Mrs,Mr : "
@@ -117,13 +117,13 @@ public class CreditServiceImpl implements ICreditService{
             mail.setContent("Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+" , we inform you that your credit application has been Declined.");
             emailService.sendSimpleEmail(mail);
 
-            /*smsService.sendSMS(String.valueOf(50585563),"Welcome to FundSphere \n\r"
+           /* smsService.sendSMS(String.valueOf(50585563),"Welcome to FundSphere \n\r"
                     .concat("Mrs,Mr : "
                             .concat(credit.getSurnameClient()
                                     .concat(" "+credit.getNameClient())
                                     .concat("\"we inform you that your credit application has been Declined.\n\r "))));
 
-     */
+         */
         }else
         {
             creditRepository.save(credit);

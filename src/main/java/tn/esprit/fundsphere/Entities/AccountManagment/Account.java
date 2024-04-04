@@ -2,6 +2,7 @@ package tn.esprit.fundsphere.Entities.AccountManagment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import tn.esprit.fundsphere.Entities.CrediMangment.Credit;
@@ -26,10 +27,12 @@ public class Account {
 
     Long idAccount;
     //@NotBlank(message = "Le numAccount ne doit pas etre vide")
+    @Positive
     Long numAccount;
 
     Double balance;
     // @NotBlank(message = "Le rib ne doit pas etre vide")
+    @Positive
     Long rib;
     //@FutureOrPresent(message = "La date de fin doit être dans le présent ou le future")
     LocalDate date;

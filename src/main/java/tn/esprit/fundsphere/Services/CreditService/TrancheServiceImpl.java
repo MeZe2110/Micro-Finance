@@ -135,11 +135,11 @@ log.info ("tranche Amount" +tranche.getAmount());
 
 // Envoyer un e-mail en cas d'echec
 
-//                          Mail mail = new Mail();
-//                          mail.setSubject("Alert from your bank");
-//                          mail.setTo("mayssendridi21@gmail.com");
-//                          mail.setContent("Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+",\nWe'd like to inform you that your account has not been debited by the amount of "+credit.getAmountRecoveryMonth()+" for "+tranche.getDateLimit()+"\nThe total amount already payed is "+tranche.getRateRecovery()+".\nPlease contact us for more information.");
-//                          emailService.sendSimpleEmail(mail);
+                        Mail mail = new Mail();
+                          mail.setSubject("Alert from your bank");
+                          mail.setTo("mayssendridi21@gmail.com");
+                          mail.setContent("Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+",\nWe'd like to inform you that your account has not been debited by the amount of "+credit.getAmountRecoveryMonth()+" for "+tranche.getDateLimit()+"\nThe total amount already payed is "+tranche.getRateRecovery()+".\nPlease contact us for more information.");
+                          emailService.sendSimpleEmail(mail);
 
 // Envoyer un SMS en cas d'echec
 //                     smsService.sendSMS(String.valueOf(50585563),"Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+",\nWe'd like to inform you that your account has not been debited by the amount of "+credit.getAmountRecoveryMonth()+" for "+tranche.getDateLimit()+"\nThe total amount already payed is "+tranche.getRateRecovery()+".\nPlease contact us for more information.");
@@ -158,12 +158,12 @@ log.info ("tranche Amount" +tranche.getAmount());
 
 //// Envoyer un e-mail en cas de succès
 //
-//                      Mail mail = new Mail();
-//                      mail.setSubject("Information from your bank");
-//                      mail.setTo("mayssendridi21@gmail.com");
-//                      mail.setContent("Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+",\nWe'd like to inform you that the amount of "+credit.getAmountRecoveryMonth()+" for "+tranche.getDateLimit()+" has been successfully retrieved from your account.\nThe total amount already payed is "+tranche.getRateRecovery()+".");
-//                      emailService.sendSimpleEmail(mail);
-//
+                   Mail mail = new Mail();
+                      mail.setSubject("Information from your bank");
+                      mail.setTo("mayssendridi21@gmail.com");
+                      mail.setContent("Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+",\nWe'd like to inform you that the amount of "+credit.getAmountRecoveryMonth()+" for "+tranche.getDateLimit()+" has been successfully retrieved from your account.\nThe total amount already payed is "+tranche.getRateRecovery()+".");
+                      emailService.sendSimpleEmail(mail);
+
 //// Envoyer un SMS en cas de succès
 //                     smsService.sendSMS(String.valueOf(50585563),"Mrs,Mr "+credit.getSurnameClient()+" "+credit.getNameClient()+",\nWe'd like to inform you that the amount of "+credit.getAmountRecoveryMonth()+" for "+tranche.getDateLimit()+" has been successfully retrieved from your account.\nThe total amount already payed is "+tranche.getRateRecovery()+".");
 //
