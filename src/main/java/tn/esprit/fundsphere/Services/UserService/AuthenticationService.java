@@ -2,20 +2,26 @@ package tn.esprit.fundsphere.Services.UserService;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import lombok.RequiredArgsConstructor;
+
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import tn.esprit.fundsphere.Entities.UserManagment.AuthenticationResponse;
 import tn.esprit.fundsphere.Entities.UserManagment.Token;
 import tn.esprit.fundsphere.Entities.UserManagment.User;
 import tn.esprit.fundsphere.Entities.UserManagment.VerificaitonRequest;
+
 import tn.esprit.fundsphere.Exceptions.UsernameAlreadyTakenException;
 import tn.esprit.fundsphere.Repositories.UserRepository.TokenRepository;
 import tn.esprit.fundsphere.Repositories.UserRepository.UserRepository;
@@ -36,6 +42,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     private final TwoFactorsAuthenticationService twoFactorsAuthenticationService;
+    private final UserRepository userRepository;
 
     public AuthenticationResponse register(User request) {
         if (repository.existsByUsername(request.getUsername()))
@@ -158,7 +165,7 @@ public class AuthenticationService {
         }
     }
 
-    public AuthenticationResponse verifyCode(VerificaitonRequest verificaitonRequest) {
+    public AuthenticationResponse verifyCode(@NotNull VerificaitonRequest verificaitonRequest) {
         User user =repository.findByUsername(verificaitonRequest.getUsername())
                 .orElseThrow(()-> new EntityNotFoundException(String.format("user not found %S",verificaitonRequest.getUsername())));
 
@@ -173,5 +180,10 @@ public class AuthenticationService {
                 .mfaEnabled(user.isMfaEnabled())
                 .build();
     }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 }
+
 

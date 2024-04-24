@@ -1,13 +1,17 @@
 package tn.esprit.fundsphere.config;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 import org.springframework.web.cors.CorsConfiguration;
 
 import tn.esprit.fundsphere.Services.UserService.UserDetailsServiceImp;
@@ -26,12 +31,12 @@ import tn.esprit.fundsphere.filter.JwtAuthenticationFilter;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.springframework.http.HttpHeaders.*;
-import static org.springframework.http.HttpMethod.*;
+
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
     private final UserDetailsServiceImp userDetailsServiceImp;
@@ -65,17 +70,9 @@ public class SecurityConfig {
                 })
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                     req->req.requestMatchers("/login/**","/register/**")
+                     req->req.requestMatchers("/login/**","/register/**","/verify/**","/show-users")
                              .permitAll()
-                             .requestMatchers("/admin-only/**")
-                             .hasAuthority("ADMIN")
-                             .requestMatchers("/client-only/**")
-                             .hasAuthority("CLIENT")
-                             .requestMatchers("/investor-only/**")
-                             .hasAuthority("INVESTOR")
-                             .requestMatchers("/trainer-only/**")
-                             .hasAuthority("TRAINER")
-                             .anyRequest()
+                             .requestMatchers("/show-users")
                              .authenticated()
                 ).userDetailsService(userDetailsServiceImp)
                 .exceptionHandling(e->e.accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))

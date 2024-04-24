@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import tn.esprit.fundsphere.Entities.UserManagment.User;
 
+import java.util.List;
 import java.util.Optional;
 
 
