@@ -1,0 +1,41 @@
+<div class="container py-5">
+  <header class="text-center text-white">
+    <h1 class="display-4">Transaction List</h1>
+    <p class="lead mb-0">Viewing a list of all transactions.</p>
+  </header>
+  <div class="row py-5">
+    <div class="col-lg-10 mx-auto">
+      <div class="card rounded shadow border-0">
+        <div class="card-body p-5 bg-white rounded">
+          <!-- Add search input field -->
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm">
+          </div>
+          <div class="table-responsive">
+            <table id="transactionTable" style="width:100%" class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Sender</th>
+                  <th>Receiver</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Use ngFor with filter pipe to display filtered transactions -->
+                <tr *ngFor="let transaction of filteredTransactions">
+                  <td>{{ transaction.sender?.user?.firstname }}</td>
+                  <td>{{ transaction.receiver?.user?.firstname }}</td>
+                  <td>{{ transaction.amount }}</td>
+                  <td>{{ transaction.date | date: 'dd-MM-yyyy' }}</td>
+                  <td>{{ transaction.typeT }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

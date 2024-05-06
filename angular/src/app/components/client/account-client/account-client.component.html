@@ -1,0 +1,45 @@
+<div class="container-fluid mt-3" *ngIf="!showAddForm">
+    <!-- Existing card section -->
+    <div *ngFor="let account of accounts" class="card p-2 shadow mb-3">
+        <div class="row g-0 rounded-top overflow-hidden">
+            <div class="col-md-4 position-relative">
+                <div class="card-overlay-hover">
+                    <!-- Conditional Image -->
+                    <img [src]="getImagePath(account.typeA)" class="card-img-top img-thumbnail" alt="Account Image">
+                </div>
+                <!-- Hover element -->
+            </div>
+            <div class="col-md-8">
+                <!-- Card body -->
+                <div class="card-body">
+                    <!-- Account number and balance -->
+                    <div class="mb-3">
+                        <h5 class="card-title">Account Number</h5>
+                        <span class="text-muted">{{ account.numAccount }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <h5 class="card-title">Balance</h5>
+                        <span class="text-muted">{{ account.balance | currency }}</span>
+                    </div>
+                    <!-- Account type -->
+                    <div class="mb-3">
+                        <h5 class="card-title">Account Type</h5>
+                        <span class="text-muted">{{ account.typeA }}</span>
+                    </div>
+                    <!-- Account creation date -->
+                    <div class="mb-3">
+                        <h5 class="card-title">Creation Date</h5>
+                        <span class="text-muted">{{ account.date | date }}</span>
+                    </div>
+                    <!-- Account RIB -->
+                    <div class="mb-3">
+                        <h5 class="card-title">RIB</h5>
+                        <span class="text-muted">{{ account.rib }}</span>
+                    </div>
+                    <!-- Delete button -->
+                    <button class="btn btn-danger" (click)="deleteAccount(account)">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

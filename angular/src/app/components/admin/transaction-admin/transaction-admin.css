@@ -1,0 +1,22 @@
+/* compte-transaction-admin.css */
+.account-list {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.account-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.account-table th,
+.account-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.account-table th {
+    background-color: #f2f2f2;
+}

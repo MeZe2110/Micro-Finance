@@ -1,0 +1,51 @@
+<form [formGroup]="transactionForm" (ngSubmit)="submitTransaction()" novalidate>
+  <div class="mb-3">
+    <label for="sender" class="form-label">Sender</label>
+    <select class="form-select" id="sender" formControlName="sender">
+      <option value="" disabled selected>Select sender</option>
+      <option *ngFor="let account of accounts" [value]="account.idAccount">{{ account.user?.firstname }} {{ account.user?.lastname }}</option>
+    </select>
+    <div *ngIf="transactionForm.get('sender')?.invalid && transactionForm.get('sender')?.touched" class="text-danger">
+      Sender is required
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="receiver" class="form-label">Receiver</label>
+    <select class="form-select" id="receiver" formControlName="receiver">
+      <option value="" disabled selected>Select receiver</option>
+      <option *ngFor="let account of accounts" [value]="account.idAccount">{{ account.user?.firstname }} {{ account.user?.lastname }}</option>
+    </select>
+    <div *ngIf="transactionForm.get('receiver')?.invalid && transactionForm.get('receiver')?.touched" class="text-danger">
+      Receiver is required
+    </div>
+  </div>
+  
+  <div class="mb-3">
+    <label for="amount" class="form-label">Amount</label>
+    <div class="input-group">
+      <input type="number" class="form-control" id="amount" formControlName="amount">
+      <span class="input-group-text">TND</span>
+    </div>
+    <div *ngIf="transactionForm.get('amount')?.invalid && transactionForm.get('amount')?.touched" class="text-danger">
+      Amount is required
+    </div>
+  </div>      
+  <div class="mb-3">
+    <label for="type" class="form-label">Type</label>
+    <select class="form-select" id="type" formControlName="typeT"> <!-- Changed from 'type' to 'typeT' -->
+      <option value="" disabled selected>Select transaction type</option>
+      <option value="TRANSFER">Transfer</option>
+      <option value="DEPOSIT">Deposit</option>
+      <!-- <option value="INVESTMENT">Investment</option>
+      <option value="AUTO_TRANSFER">Auto Transfer</option>
+      <option value="INCOME">Income</option>
+      <option value="LOAN">Loan</option>
+      <option value="RETURN_LOAN">Return Loan</option>
+      <option value="RETURN_INVESTMENT">Return Investment</option> -->
+    </select>
+    <div *ngIf="transactionForm.get('typeT')?.invalid && transactionForm.get('typeT')?.touched" class="text-danger"> <!-- Changed from 'type' to 'typeT' -->
+      Type is required
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

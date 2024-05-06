@@ -1,0 +1,43 @@
+<form [formGroup]="accountForm" (ngSubmit)="addAccount()" novalidate>
+	<div class="mb-3">
+	  <label for="numAccount" class="form-label">Number Account</label>
+	  <input type="number" class="form-control" id="numAccount" formControlName="numAccount" readonly>
+	  <div *ngIf="accountForm.get('numAccount')?.invalid && accountForm.get('numAccount')?.touched" class="text-danger">
+		Number Account is required
+	  </div>
+	</div>
+	<div class="mb-3">
+	  <label for="rib" class="form-label">RIB</label>
+	  <input type="number" class="form-control" id="rib" formControlName="rib" readonly>
+	  <div *ngIf="accountForm.get('rib')?.invalid && accountForm.get('rib')?.touched" class="text-danger">
+		RIB is required
+	  </div>
+	</div>
+	<div class="mb-3">
+	  <label for="balance" class="form-label">Balance</label>
+	  <input type="number" class="form-control" id="balance" formControlName="balance" readonly>
+	  <div *ngIf="accountForm.get('balance')?.invalid && accountForm.get('balance')?.touched" class="text-danger">
+		Balance is required
+	  </div>
+	</div>
+	<div class="mb-3">
+	  <label for="typeA" class="form-label">Type Account</label>
+	  <select class="form-select" id="typeA" formControlName="typeA">
+		<option value="" disabled selected>Select account type</option>
+		<option value="SAVING_ACCOUNT">Saving Account</option>
+		<option value="CURRENT_ACCOUNT">Current Account</option>
+	  </select>
+	  <div *ngIf="accountForm.get('typeA')?.invalid && accountForm.get('typeA')?.touched" class="text-danger">
+		Type Account is required
+	  </div>
+	</div>
+	<div class="mb-3">
+	  <label for="date" class="form-label">Date</label>
+	  <input type="date" class="form-control" id="date" formControlName="date" readonly>
+	  <div *ngIf="accountForm.get('date')?.invalid && accountForm.get('date')?.touched" class="text-danger">
+		Date is required
+	  </div>
+	</div>
+	<button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  
